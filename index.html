@@ -2,11 +2,11 @@
     body {
         background-color: #272727;
         margin: 0;
-        display: flex; 
+        display: flex;
         height: 100vh;
-        overflow: hidden; 
+        overflow: hidden;
     }
-    
+
     .sidebar {
         background-color: #1e1e1e;
         width: 150px;
@@ -16,9 +16,10 @@
         justify-content: center;
         align-items: center;
         gap: 30px;
-        order: 2; 
+        order: 2;
+        flex-shrink: 0;
     }
-    
+
     .button {
         width: 100px;
         height: 100px;
@@ -31,53 +32,96 @@
         font-weight: bold;
         transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), background-color 0.2s ease;
     }
-    
+
     .button:hover {
         transform: scale(1.15);
         background-color: #444444;
     }
-    
+
+    .button.active {
+        background-color: #444444;
+    }
+
     .games {
-        background-color: white;
+        background-color: #272727;
         height: 100vh;
-        flex-grow: 1; 
-        order: 1; 
+        flex-grow: 1;
+        order: 1;
+        padding: 20px;
+        display: flex;
+        flex-wrap: wrap;
+        align-content: flex-start;
+        gap: 20px;
+        overflow-y: auto;
+    }
+
+    #gameentry,
+    .gameentry {
+        background-color: #0b0b0b;
+        height: 230px;
+        width: 180px;
+        min-width: 180px;
+        border-radius: 10px;
+        flex-shrink: 0;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        cursor: pointer;
+        overflow: hidden;
+        transition: transform 0.2s ease, background-color 0.2s ease;
     }
 
     #gameentry {
-    background-color: black;
-    height: 230px;
-    width: 180px;
-    border-radius: 10px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 5px;
-    display: none;
-}
+        display: none;
+    }
 
-#gameentry img {
-    background-color: black;
-    height: 150px;
-    width: 150px;
-    border-radius: 10px;
-}
+    .gameentry {
+        display: flex;
+    }
 
-#gameentry h1 {
-    color: white;
-    font-weight: bold;
-    margin: 0;
-    font-size: 20px;
-}
+    .gameentry:hover {
+        transform: translateY(-5px);
+        background-color: #151515;
+    }
+
+    #gameentry img,
+    .gameentry img {
+        background-color: #0b0b0b;
+        width: 150px;
+        height: 150px;
+        max-width: 150px;
+        max-height: 150px;
+        min-width: 150px;
+        min-height: 150px;
+        object-fit: contain;
+        border-radius: 10px;
+        flex-shrink: 0;
+    }
+
+    #gameentry h1,
+    .gameentry h1 {
+        color: white;
+        font-family: Arial, Helvetica, sans-serif;
+        font-weight: 700;
+        margin: 0;
+        padding: 0 8px;
+        font-size: 18px;
+        line-height: 22px;
+        text-align: center;
+        max-width: 164px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
 </style>
 
 <div class="sidebar">
-    <button class="button" onclick="SetCategory('games')">Games</button>
-    <button class="button" onclick="SetCategory('tools')">Tools</button>
-    <button class="button" onclick="SetCategory('ports')">Ports</button>
-    <button class="button" onclick="SetCategory('flash')">Flash</button>
-    <button class="button" onclick="SetCategory('roms')">Roms</button>
+    <button class="button active" onclick="SetCategory('games', this)">Games</button>
+    <button class="button" onclick="SetCategory('tools', this)">Tools</button>
+    <button class="button" onclick="SetCategory('ports', this)">Ports</button>
+    <button class="button" onclick="SetCategory('flash', this)">Flash</button>
+    <button class="button" onclick="SetCategory('roms', this)">Roms</button>
 </div>
 
 <div class="games">
@@ -90,6 +134,9 @@
 <script>
     const GAME_JSON_URL = "https://raw.githubusercontent.com/usheje883-maker/newlab/main/games.json";
 
+    let allGames = [];
+    let currentCategory = "games";
+
     async function LoadGames() {
         try {
             const response = await fetch(GAME_JSON_URL);
@@ -98,44 +145,73 @@
                 throw new Error("Failed to load games.json");
             }
 
-            const games = await response.json();
-            const container = document.querySelector(".games");
-            const template = document.querySelector("#gameentry");
+            allGames = await response.json();
 
-            for (const game of games) {
-                const entry = template.cloneNode(true);
+            DisplayGames();
 
-                entry.removeAttribute("id");
-                entry.style.display = "flex";
-                entry.classList.remove("template");
-
-                const image = entry.querySelector("img");
-                const title = entry.querySelector("h1");
-
-                title.textContent = game.name;
-
-                if (game.image) {
-                    image.src = game.image;
-                }
-
-                entry.addEventListener("click", function() {
-                    if (game.link) {
-                        window.location.href = game.link;
-                    }
-                });
-
-                container.appendChild(entry);
-            }
         } catch (error) {
             console.error("Error loading games:", error);
         }
     }
 
-    function SetCategory(category) {
-        console.log("Selected category:", category);
+        function DisplayGames() {
+    const container = document.querySelector(".games");
+    const template = document.querySelector("#gameentry");
+
+    container.querySelectorAll(".gameentry").forEach(entry => {
+        entry.remove();
+    });
+
+    const filteredGames = allGames.filter(game => {
+        const category = String(game.category || "").toLowerCase();
+
+        return category === currentCategory.toLowerCase() || category === "all";
+    });
+
+    for (const game of filteredGames) {
+        const entry = template.cloneNode(true);
+
+        entry.id = "";
+        entry.className = "gameentry";
+        entry.style.display = "flex";
+
+        const image = entry.querySelector("img");
+        const title = entry.querySelector("h1");
+
+        if (image) {
+            image.src = game.image || "";
+            image.style.width = "150px";
+            image.style.height = "150px";
+            image.style.maxWidth = "150px";
+            image.style.maxHeight = "150px";
+            image.style.objectFit = "contain";
+        }
+
+        if (title) {
+            title.textContent = game.name || "Unnamed Game";
+        }
+
+        entry.addEventListener("click", function() {
+            if (game.link) {
+                window.location.href = game.link;
+            }
+        });
+
+        container.appendChild(entry);
+    }
+}
+
+    function SetCategory(category, button) {
+        currentCategory = category;
+
+        document.querySelectorAll(".button").forEach(btn => {
+            btn.classList.remove("active");
+        });
+
+        button.classList.add("active");
+
+        DisplayGames();
     }
 
     LoadGames();
 </script>
-
-
