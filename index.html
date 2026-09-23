@@ -2,11 +2,11 @@
     body {
         background-color: #272727;
         margin: 0;
-        display: flex; 
+        display: flex;
         height: 100vh;
-        overflow: hidden; 
+        overflow: hidden;
     }
-    
+
     .sidebar {
         background-color: #1e1e1e;
         width: 150px;
@@ -16,9 +16,10 @@
         justify-content: center;
         align-items: center;
         gap: 30px;
-        order: 2; 
+        order: 2;
+        flex-shrink: 0;
     }
-    
+
     .button {
         width: 100px;
         height: 100px;
@@ -31,56 +32,72 @@
         font-weight: bold;
         transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), background-color 0.2s ease;
     }
-    
+
     .button:hover {
         transform: scale(1.15);
         background-color: #444444;
     }
-    
+
     .games {
         background-color: white;
         height: 100vh;
-        flex-grow: 1; 
-        order: 1; 
+        flex-grow: 1;
+        order: 1;
+        padding: 20px;
+        display: flex;
+        flex-wrap: wrap;
+        align-content: flex-start;
+        gap: 20px;
+        overflow-y: auto;
     }
 
-#gameentry {
-    background-color: black;
-    height: 230px;
-    width: 180px;
-    border-radius: 10px;
-    display: none;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 5px;
-}
+    #gameentry,
+    .gameentry {
+        background-color: black;
+        height: 230px;
+        width: 180px;
+        min-width: 180px;
+        border-radius: 10px;
+        flex-shrink: 0;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 5px;
+        cursor: pointer;
+    }
 
-.gameentry {
-    background-color: black;
-    height: 230px;
-    width: 180px;
-    border-radius: 10px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 5px;
-}
+    #gameentry {
+        display: none;
+    }
 
-#gameentry img {
-    background-color: black;
-    height: 150px;
-    width: 150px;
-    border-radius: 10px;
-}
+    .gameentry {
+        display: flex;
+    }
 
-#gameentry h1 {
-    color: white;
-    font-weight: bold;
-    margin: 0;
-    font-size: 20px;
-}
+    #gameentry img,
+    .gameentry img {
+        background-color: black;
+        width: 120px;
+        height: 120px;
+        max-width: 120px;
+        max-height: 120px;
+        object-fit: contain;
+        border-radius: 10px;
+        flex-shrink: 0;
+    }
+
+    #gameentry h1,
+    .gameentry h1 {
+        color: white;
+        font-weight: bold;
+        margin: 0;
+        font-size: 20px;
+        text-align: center;
+        max-width: 160px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
 </style>
 
 <div class="sidebar">
@@ -104,6 +121,11 @@
     async function LoadGames() {
         try {
             const response = await fetch(GAME_JSON_URL);
+
+            if (!response.ok) {
+                throw new Error("Failed to load games.json");
+            }
+
             const games = await response.json();
 
             const container = document.querySelector(".games");
@@ -121,17 +143,22 @@
 
                 if (image) {
                     image.src = game.image || "";
+                    image.style.width = "120px";
+                    image.style.height = "120px";
+                    image.style.maxWidth = "120px";
+                    image.style.maxHeight = "120px";
+                    image.style.objectFit = "contain";
                 }
 
                 if (title) {
                     title.textContent = game.name || "Unnamed Game";
                 }
 
-                entry.onclick = function() {
+                entry.addEventListener("click", function() {
                     if (game.link) {
                         window.location.href = game.link;
                     }
-                };
+                });
 
                 container.appendChild(entry);
             }
@@ -139,7 +166,7 @@
             template.remove();
 
         } catch (error) {
-            console.error("Failed to load games:", error);
+            console.error("Error loading games:", error);
         }
     }
 
