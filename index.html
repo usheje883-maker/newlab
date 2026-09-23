@@ -51,8 +51,9 @@
         overflow-y: auto;
     }
 
-    #gameentry, .gameentry {
-        background-color: #0f0f0f;
+    #gameentry,
+    .gameentry {
+        background-color: #0b0b0b;
         height: 230px;
         width: 180px;
         min-width: 180px;
@@ -61,8 +62,10 @@
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        gap: 5px;
+        gap: 8px;
         cursor: pointer;
+        overflow: hidden;
+        transition: transform 0.2s ease, background-color 0.2s ease;
     }
 
     #gameentry {
@@ -73,13 +76,20 @@
         display: flex;
     }
 
+    .gameentry:hover {
+        transform: translateY(-5px);
+        background-color: #151515;
+    }
+
     #gameentry img,
     .gameentry img {
-        background-color: black;
-        width: 120px;
-        height: 120px;
-        max-width: 120px;
-        max-height: 120px;
+        background-color: #0b0b0b;
+        width: 150px;
+        height: 150px;
+        max-width: 150px;
+        max-height: 150px;
+        min-width: 150px;
+        min-height: 150px;
         object-fit: contain;
         border-radius: 10px;
         flex-shrink: 0;
@@ -88,11 +98,14 @@
     #gameentry h1,
     .gameentry h1 {
         color: white;
-        font-weight: bold;
+        font-family: Arial, Helvetica, sans-serif;
+        font-weight: 700;
         margin: 0;
-        font-size: 20px;
+        padding: 0 8px;
+        font-size: 18px;
+        line-height: 22px;
         text-align: center;
-        max-width: 160px;
+        max-width: 164px;
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
@@ -142,10 +155,10 @@
 
                 if (image) {
                     image.src = game.image || "";
-                    image.style.width = "120px";
-                    image.style.height = "120px";
-                    image.style.maxWidth = "120px";
-                    image.style.maxHeight = "120px";
+                    image.style.width = "150px";
+                    image.style.height = "150px";
+                    image.style.maxWidth = "150px";
+                    image.style.maxHeight = "150px";
                     image.style.objectFit = "contain";
                 }
 
