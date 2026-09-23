@@ -43,6 +43,33 @@
         flex-grow: 1; 
         order: 1; 
     }
+
+    #gameentry {
+    background-color: black;
+    height: 230px;
+    width: 180px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    display: none;
+}
+
+#gameentry img {
+    background-color: black;
+    height: 150px;
+    width: 150px;
+    border-radius: 10px;
+}
+
+#gameentry h1 {
+    color: white;
+    font-weight: bold;
+    margin: 0;
+    font-size: 20px;
+}
 </style>
 
 <div class="sidebar">
@@ -54,13 +81,61 @@
 </div>
 
 <div class="games">
-
+    <div class="template" id="gameentry">
+        <img src="https://media.tenor.com/WtYEe3sIFIAAAAAM/boomer-sooner.gif">
+        <h1>Template</h1>
+    </div>
 </div>
 
 <script>
+    const GAME_JSON_URL = "https://raw.githubusercontent.com/usheje883-maker/newlab/main/games.json";
+
+    async function LoadGames() {
+        try {
+            const response = await fetch(GAME_JSON_URL);
+
+            if (!response.ok) {
+                throw new Error("Failed to load games.json");
+            }
+
+            const games = await response.json();
+            const container = document.querySelector(".games");
+            const template = document.querySelector("#gameentry");
+
+            for (const game of games) {
+                const entry = template.cloneNode(true);
+
+                entry.removeAttribute("id");
+                entry.style.display = "flex";
+                entry.classList.remove("template");
+
+                const image = entry.querySelector("img");
+                const title = entry.querySelector("h1");
+
+                title.textContent = game.name;
+
+                if (game.image) {
+                    image.src = game.image;
+                }
+
+                entry.addEventListener("click", function() {
+                    if (game.link) {
+                        window.location.href = game.link;
+                    }
+                });
+
+                container.appendChild(entry);
+            }
+        } catch (error) {
+            console.error("Error loading games:", error);
+        }
+    }
+
     function SetCategory(category) {
         console.log("Selected category:", category);
     }
+
+    LoadGames();
 </script>
 
 
