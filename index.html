@@ -1,0 +1,66 @@
+<style>
+    body {
+        background-color: #272727;
+        margin: 0;
+        display: flex; 
+        height: 100vh;
+        overflow: hidden; 
+    }
+    
+    .sidebar {
+        background-color: #1e1e1e;
+        width: 150px;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 30px;
+        order: 2; 
+    }
+    
+    .button {
+        width: 100px;
+        height: 100px;
+        border-radius: 25px;
+        background-color: #252525;
+        border: none;
+        color: white;
+        font-size: 25px;
+        cursor: pointer;
+        font-weight: bold;
+        transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), background-color 0.2s ease;
+    }
+    
+    .button:hover {
+        transform: scale(1.15);
+        background-color: #444444;
+    }
+    
+    .games {
+        background-color: white;
+        height: 100vh;
+        flex-grow: 1; 
+        order: 1; 
+    }
+</style>
+
+<div class="sidebar">
+    <button class="button" onclick="SetCategory('games')">Games</button>
+    <button class="button" onclick="SetCategory('tools')">Tools</button>
+    <button class="button" onclick="SetCategory('ports')">Ports</button>
+    <button class="button" onclick="SetCategory('flash')">Flash</button>
+    <button class="button" onclick="SetCategory('roms')">Roms</button>
+</div>
+
+<div class="games">
+
+</div>
+
+<script>
+    function SetCategory(category) {
+        console.log("Selected category:", category);
+    }
+</script>
+
+
