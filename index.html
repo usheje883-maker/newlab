@@ -154,52 +154,50 @@
         }
     }
 
-        function DisplayGames() {
-    const container = document.querySelector(".games");
-    const template = document.querySelector("#gameentry");
+    function DisplayGames() {
+        const container = document.querySelector(".games");
+        const template = document.querySelector("#gameentry");
 
-    container.querySelectorAll(".gameentry").forEach(entry => {
-        entry.remove();
-    });
-
-    const filteredGames = allGames.filter(game => {
-        const category = String(game.category || "").toLowerCase();
-
-        return category === currentCategory.toLowerCase() || category === "all";
-    });
-
-    for (const game of filteredGames) {
-        const entry = template.cloneNode(true);
-
-        entry.id = "";
-        entry.className = "gameentry";
-        entry.style.display = "flex";
-
-        const image = entry.querySelector("img");
-        const title = entry.querySelector("h1");
-
-        if (image) {
-            image.src = game.image || "";
-            image.style.width = "150px";
-            image.style.height = "150px";
-            image.style.maxWidth = "150px";
-            image.style.maxHeight = "150px";
-            image.style.objectFit = "contain";
-        }
-
-        if (title) {
-            title.textContent = game.name || "Unnamed Game";
-        }
-
-        entry.addEventListener("click", function() {
-            if (game.link) {
-                window.location.href = game.link;
-            }
+        container.querySelectorAll(".gameentry").forEach(entry => {
+            entry.remove();
         });
 
-        container.appendChild(entry);
+        const filteredGames = allGames.filter(game => {
+            return String(game.category || "").toLowerCase() === currentCategory.toLowerCase();
+        });
+
+        for (const game of filteredGames) {
+            const entry = template.cloneNode(true);
+
+            entry.id = "";
+            entry.className = "gameentry";
+            entry.style.display = "flex";
+
+            const image = entry.querySelector("img");
+            const title = entry.querySelector("h1");
+
+            if (image) {
+                image.src = game.image || "";
+                image.style.width = "150px";
+                image.style.height = "150px";
+                image.style.maxWidth = "150px";
+                image.style.maxHeight = "150px";
+                image.style.objectFit = "contain";
+            }
+
+            if (title) {
+                title.textContent = game.name || "Unnamed Game";
+            }
+
+            entry.addEventListener("click", function() {
+                if (game.link) {
+                    window.location.href = game.link;
+                }
+            });
+
+            container.appendChild(entry);
+        }
     }
-}
 
     function SetCategory(category, button) {
         currentCategory = category;
