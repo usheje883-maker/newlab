@@ -44,7 +44,19 @@
         order: 1; 
     }
 
-    #gameentry {
+#gameentry {
+    background-color: black;
+    height: 230px;
+    width: 180px;
+    border-radius: 10px;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+}
+
+.gameentry {
     background-color: black;
     height: 230px;
     width: 180px;
@@ -54,7 +66,6 @@
     align-items: center;
     justify-content: center;
     gap: 5px;
-    display: none;
 }
 
 #gameentry img {
@@ -93,41 +104,42 @@
     async function LoadGames() {
         try {
             const response = await fetch(GAME_JSON_URL);
-
-            if (!response.ok) {
-                throw new Error("Failed to load games.json");
-            }
-
             const games = await response.json();
+
             const container = document.querySelector(".games");
             const template = document.querySelector("#gameentry");
 
             for (const game of games) {
                 const entry = template.cloneNode(true);
 
-                entry.removeAttribute("id");
+                entry.id = "";
+                entry.className = "gameentry";
                 entry.style.display = "flex";
-                entry.classList.remove("template");
 
                 const image = entry.querySelector("img");
                 const title = entry.querySelector("h1");
 
-                title.textContent = game.name;
-
-                if (game.image) {
-                    image.src = game.image;
+                if (image) {
+                    image.src = game.image || "";
                 }
 
-                entry.addEventListener("click", function() {
+                if (title) {
+                    title.textContent = game.name || "Unnamed Game";
+                }
+
+                entry.onclick = function() {
                     if (game.link) {
                         window.location.href = game.link;
                     }
-                });
+                };
 
                 container.appendChild(entry);
             }
+
+            template.remove();
+
         } catch (error) {
-            console.error("Error loading games:", error);
+            console.error("Failed to load games:", error);
         }
     }
 
@@ -137,5 +149,3 @@
 
     LoadGames();
 </script>
-
-
