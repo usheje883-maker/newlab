@@ -1,3 +1,4 @@
+```html
 <style>
     body {
         background-color: #272727;
@@ -35,6 +36,10 @@
 
     .button:hover {
         transform: scale(1.15);
+        background-color: #444444;
+    }
+
+    .button.active {
         background-color: #444444;
     }
 
@@ -113,11 +118,11 @@
 </style>
 
 <div class="sidebar">
-    <button class="button" onclick="SetCategory('games')">Games</button>
-    <button class="button" onclick="SetCategory('tools')">Tools</button>
-    <button class="button" onclick="SetCategory('ports')">Ports</button>
-    <button class="button" onclick="SetCategory('flash')">Flash</button>
-    <button class="button" onclick="SetCategory('roms')">Roms</button>
+    <button class="button active" onclick="SetCategory('games', this)">Games</button>
+    <button class="button" onclick="SetCategory('tools', this)">Tools</button>
+    <button class="button" onclick="SetCategory('ports', this)">Ports</button>
+    <button class="button" onclick="SetCategory('flash', this)">Flash</button>
+    <button class="button" onclick="SetCategory('roms', this)">Roms</button>
 </div>
 
 <div class="games">
@@ -130,6 +135,9 @@
 <script>
     const GAME_JSON_URL = "https://raw.githubusercontent.com/usheje883-maker/newlab/main/games.json";
 
+    let allGames = [];
+    let currentCategory = "games";
+
     async function LoadGames() {
         try {
             const response = await fetch(GAME_JSON_URL);
@@ -138,52 +146,70 @@
                 throw new Error("Failed to load games.json");
             }
 
-            const games = await response.json();
+            allGames = await response.json();
 
-            const container = document.querySelector(".games");
-            const template = document.querySelector("#gameentry");
-
-            for (const game of games) {
-                const entry = template.cloneNode(true);
-
-                entry.id = "";
-                entry.className = "gameentry";
-                entry.style.display = "flex";
-
-                const image = entry.querySelector("img");
-                const title = entry.querySelector("h1");
-
-                if (image) {
-                    image.src = game.image || "";
-                    image.style.width = "150px";
-                    image.style.height = "150px";
-                    image.style.maxWidth = "150px";
-                    image.style.maxHeight = "150px";
-                    image.style.objectFit = "contain";
-                }
-
-                if (title) {
-                    title.textContent = game.name || "Unnamed Game";
-                }
-
-                entry.addEventListener("click", function() {
-                    if (game.link) {
-                        window.location.href = game.link;
-                    }
-                });
-
-                container.appendChild(entry);
-            }
-
-            template.remove();
+            DisplayGames();
 
         } catch (error) {
             console.error("Error loading games:", error);
         }
     }
 
-    function SetCategory(category) {
-        console.log("Selected category:", category);
+    function DisplayGames() {
+        const container = document.querySelector(".games");
+        const template = document.querySelector("#gameentry");
+
+        container.querySelectorAll(".gameentry").forEach(entry => {
+            entry.remove();
+        });
+
+        const filteredGames = allGames.filter(game => {
+            return String(game.category || "").toLowerCase() === currentCategory.toLowerCase();
+        });
+
+        for (const game of filteredGames) {
+            const entry = template.cloneNode(true);
+
+            entry.id = "";
+            entry.className = "gameentry";
+            entry.style.display = "flex";
+
+            const image = entry.querySelector("img");
+            const title = entry.querySelector("h1");
+
+            if (image) {
+                image.src = game.image || "";
+                image.style.width = "150px";
+                image.style.height = "150px";
+                image.style.maxWidth = "150px";
+                image.style.maxHeight = "150px";
+                image.style.objectFit = "contain";
+            }
+
+            if (title) {
+                title.textContent = game.name || "Unnamed Game";
+            }
+
+            entry.addEventListener("click", function() {
+                if (game.link) {
+                    window.location.href = game.link;
+                }
+            });
+
+            container.appendChild(entry);
+        }
+    }
+
+    function SetCategory(category, button) {
+        currentCategory = category;
+
+        document.querySelectorAll(".button").forEach(btn => {
+            btn.classList.remove("active");
+        });
+
+        button.classList.add("active");
+
+        DisplayGames();
     }
 
     LoadGames();
