@@ -53,9 +53,13 @@
         align-content: flex-start;
         gap: 20px;
         overflow-y: auto;
+        box-sizing: border-box;
     }
 
-    #gameentry,
+    #gameentry {
+        display: none;
+    }
+
     .gameentry {
         background-color: #0b0b0b;
         height: 230px;
@@ -63,6 +67,7 @@
         min-width: 180px;
         border-radius: 10px;
         flex-shrink: 0;
+        display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
@@ -72,34 +77,20 @@
         transition: transform 0.2s ease, background-color 0.2s ease;
     }
 
-    #gameentry {
-        display: none;
-    }
-
-    .gameentry {
-        display: flex;
-    }
-
     .gameentry:hover {
         transform: translateY(-5px);
         background-color: #151515;
     }
 
-    #gameentry img,
     .gameentry img {
         background-color: #0b0b0b;
         width: 150px;
         height: 150px;
-        max-width: 150px;
-        max-height: 150px;
-        min-width: 150px;
-        min-height: 150px;
         object-fit: contain;
         border-radius: 10px;
         flex-shrink: 0;
     }
 
-    #gameentry h1,
     .gameentry h1 {
         color: white;
         font-family: Arial, Helvetica, sans-serif;
@@ -117,7 +108,7 @@
 </style>
 
 <div class="sidebar">
-    <button class="button active" onclick="SetCategory('games', this)">Games</button>
+    <button class="button active" onclick="SetCategory('', this)">Games</button>
     <button class="button" onclick="SetCategory('tools', this)">Tools</button>
     <button class="button" onclick="SetCategory('ports', this)">Ports</button>
     <button class="button" onclick="SetCategory('flash', this)">Flash</button>
@@ -125,7 +116,7 @@
 </div>
 
 <div class="games">
-    <div class="template" id="gameentry">
+    <div id="gameentry">
         <img src="https://media.tenor.com/WtYEe3sIFIAAAAAM/boomer-sooner.gif">
         <h1>Template</h1>
     </div>
@@ -135,65 +126,35 @@
     const GAME_JSON_URL = "https://raw.githubusercontent.com/usheje883-maker/newlab/main/games.json";
 
     let allGames = [];
-    let currentCategory = "games";
+    let currentCategory = "";
 
-    async function LoadGames() {
-        try {
-            const response = await fetch(GAME_JSON_URL);
-
-            if (!response.ok) {
-                throw new Error("Failed to load games.json");
-            }
-
-            allGames = await response.json();
-
-            DisplayGames();
-
-        } catch (error) {
-            console.error("Error loading games:", error);
-        }
-    }
-
-    function DisplayGames() {
+    function renderGames(games) {
         const container = document.querySelector(".games");
-        const template = document.querySelector("#gameentry");
+        container.querySelectorAll(".gameentry").forEach(entry => entry.remove());
 
-        container.querySelectorAll(".gameentry").forEach(entry => {
-            entry.remove();
-        });
+        for (const game of games) {
+            const name = game.name || "Unknown Game";
+            const image = game.image || "";
+            const link = game.link || "";
 
-        const filteredGames = allGames.filter(game => {
-            return String(game.category || "").toLowerCase() === currentCategory.toLowerCase();
-        });
-
-        for (const game of filteredGames) {
-            const entry = template.cloneNode(true);
-
-            entry.id = "";
+            const entry = document.createElement("div");
             entry.className = "gameentry";
-            entry.style.display = "flex";
 
-            const image = entry.querySelector("img");
-            const title = entry.querySelector("h1");
+            const gameImage = document.createElement("img");
+            gameImage.src = image;
+            gameImage.alt = name;
 
-            if (image) {
-                image.src = game.image || "";
-                image.style.width = "150px";
-                image.style.height = "150px";
-                image.style.maxWidth = "150px";
-                image.style.maxHeight = "150px";
-                image.style.objectFit = "contain";
+            const gameName = document.createElement("h1");
+            gameName.textContent = name;
+
+            entry.appendChild(gameImage);
+            entry.appendChild(gameName);
+
+            if (link) {
+                entry.addEventListener("click", function() {
+                    window.location.href = `iframe.html?${encodeURIComponent(link)}`;
+                });
             }
-
-            if (title) {
-                title.textContent = game.name || "Unnamed Game";
-            }
-
-            entry.addEventListener("click", function() {
-                if (game.link) {
-                    window.location.href = game.link;
-                }
-            });
 
             container.appendChild(entry);
         }
@@ -208,8 +169,33 @@
 
         button.classList.add("active");
 
-        DisplayGames();
+        if (!category) {
+            renderGames(allGames);
+        } else {
+            const filtered = allGames.filter(game =>
+                game.genre &&
+                game.genre.toLowerCase() === category.toLowerCase()
+            );
+
+            renderGames(filtered);
+        }
     }
 
-    LoadGames();
+    async function LoadGames() {
+        try {
+            const response = await fetch(GAME_JSON_URL);
+
+            if (!response.ok) {
+                throw new Error(`Failed to fetch games.json: ${response.status}`);
+            }
+
+            allGames = await response.json();
+
+            renderGames(allGames);
+        } catch (error) {
+            console.error("Error loading games:", error);
+        }
+    }
+
+    document.addEventListener("DOMContentLoaded", LoadGames);
 </script>
