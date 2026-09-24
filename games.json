@@ -8,7 +8,7 @@
     {
         "name": "Bad Time Simulator",
         "image": "Images/badtime.png",
-        "link": "https://raw.githubusercontent.com/usheje883-maker/games/main/Games/singlefile/badtimesim.html",
+        "link": "https://cdn.jsdelivr.net/gh/usheje883-maker/games@main/Games/singlefile/badtimesim.html",
         "genre": "games"
     }
 ]
