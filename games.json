@@ -4,5 +4,11 @@
         "image": "Images/gs.png",
         "link": "https://docs.google.com/forms/d/e/1FAIpQLSd8HM7-E0vftKd_N-IbGhE73oC8H6h_2msHxqAIw4Oq6gtGZQ/viewform?usp=header",
         "genre": "games"
-    }
+    },
+    {
+        "name": "Bad Time Simulator",
+        "image": "Images/badtime.png",
+        "link": "https://raw.githubusercontent.com/usheje883-maker/games/main/Games/singlefile/badtimesim.html",
+        "genre": "games"
+    },
 ]
