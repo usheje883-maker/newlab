@@ -130,5 +130,11 @@
     "image": "Images/ksp.png",
     "link": "https://cdn.jsdelivr.net/gh/usheje883-maker/games@main/Webports/singlefile/ksp.html",
     "genre": "ports"
+  },
+  {
+    "name": "Rooftop Snipers",
+    "image": "Images/rooftopsnipers.png",
+    "link": "https://cdn.jsdelivr.net/gh/usheje883-maker/games@main/Games/singlefile/rooftopsnipers.html",
+    "genre": "games"
   }
 ]
