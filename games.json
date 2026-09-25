@@ -42,8 +42,8 @@
     "genre": "games"
   },
   {
-    "name": "Drift Hunters Merge",
-    "image": "Images/drifthuntersmerge.png",
+    "name": "Drift Hunters",
+    "image": "Images/drifthunters.png",
     "link": "https://cdn.jsdelivr.net/gh/usheje883-maker/games@main/Games/singlefile/drifthuntersmerge.html",
     "genre": "games"
   },
@@ -51,12 +51,6 @@
     "name": "Drive Mad",
     "image": "Images/drivemad.png",
     "link": "https://cdn.jsdelivr.net/gh/usheje883-maker/games@main/Games/singlefile/drivemad.html",
-    "genre": "games"
-  },
-  {
-    "name": "Dubstep",
-    "image": "Images/dubstep.png",
-    "link": "https://cdn.jsdelivr.net/gh/usheje883-maker/games@main/Games/singlefile/dubstep.html",
     "genre": "games"
   },
   {
