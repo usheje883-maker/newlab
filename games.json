@@ -1,14 +1,134 @@
 [
-    {
-        "name": "Game Suggestion",
-        "image": "Images/gs.png",
-        "link": "https://docs.google.com/forms/d/e/1FAIpQLSd8HM7-E0vftKd_N-IbGhE73oC8H6h_2msHxqAIw4Oq6gtGZQ/viewform?usp=header",
-        "genre": "games"
-    },
-    {
-        "name": "Bad Time Simulator",
-        "image": "Images/badtime.png",
-        "link": "https://cdn.jsdelivr.net/gh/usheje883-maker/games@main/Games/singlefile/badtimesim.html",
-        "genre": "games"
-    }
+  {
+    "name": "Game Suggestion",
+    "image": "Images/gs.png",
+    "link": "https://docs.google.com/forms/d/e/1FAIpQLSd8HM7-E0vftKd_N-IbGhE73oC8H6h_2msHxqAIw4Oq6gtGZQ/viewform?usp=header",
+    "genre": "games"
+  },
+  {
+    "name": "Bad Time Sim",
+    "image": "Images/badtime.png",
+    "link": "https://cdn.jsdelivr.net/gh/usheje883-maker/games@main/Games/singlefile/badtimesim.html",
+    "genre": "games"
+  },
+  {
+    "name": "Baseball Bros",
+    "image": "Images/baseballbros.png",
+    "link": "https://cdn.jsdelivr.net/gh/usheje883-maker/games@main/Games/singlefile/baseballbros.html",
+    "genre": "games"
+  },
+  {
+    "name": "Basketball FRVR",
+    "image": "Images/basketballfrvr.png",
+    "link": "https://cdn.jsdelivr.net/gh/usheje883-maker/games@main/Games/singlefile/basketballfrvr.html",
+    "genre": "games"
+  },
+  {
+    "name": "Bounce Masters",
+    "image": "Images/bouncemasters.png",
+    "link": "https://cdn.jsdelivr.net/gh/usheje883-maker/games@main/Games/singlefile/bouncemasters.html",
+    "genre": "games"
+  },
+  {
+    "name": "BuildNow GG",
+    "image": "Images/buildnowgg.png",
+    "link": "https://cdn.jsdelivr.net/gh/usheje883-maker/games@main/Games/singlefile/buildnowgg.html",
+    "genre": "games"
+  },
+  {
+    "name": "Crossy Road",
+    "image": "Images/crossyroad.png",
+    "link": "https://cdn.jsdelivr.net/gh/usheje883-maker/games@main/Games/singlefile/crossyroad.html",
+    "genre": "games"
+  },
+  {
+    "name": "Drift Hunters Merge",
+    "image": "Images/drifthuntersmerge.png",
+    "link": "https://cdn.jsdelivr.net/gh/usheje883-maker/games@main/Games/singlefile/drifthuntersmerge.html",
+    "genre": "games"
+  },
+  {
+    "name": "Drive Mad",
+    "image": "Images/drivemad.png",
+    "link": "https://cdn.jsdelivr.net/gh/usheje883-maker/games@main/Games/singlefile/drivemad.html",
+    "genre": "games"
+  },
+  {
+    "name": "Dubstep",
+    "image": "Images/dubstep.png",
+    "link": "https://cdn.jsdelivr.net/gh/usheje883-maker/games@main/Games/singlefile/dubstep.html",
+    "genre": "games"
+  },
+  {
+    "name": "Eggy Car",
+    "image": "Images/eggycar.png",
+    "link": "https://cdn.jsdelivr.net/gh/usheje883-maker/games@main/Games/singlefile/eggycar.html",
+    "genre": "games"
+  },
+  {
+    "name": "Escape Road 3",
+    "image": "Images/escaperoad3.png",
+    "link": "https://cdn.jsdelivr.net/gh/usheje883-maker/games@main/Games/singlefile/escaperoad3.html",
+    "genre": "games"
+  },
+  {
+    "name": "Escape Road City 2",
+    "image": "Images/escaperoadcity2.png",
+    "link": "https://cdn.jsdelivr.net/gh/usheje883-maker/games@main/Games/singlefile/escaperoadcity2.html",
+    "genre": "games"
+  },
+  {
+    "name": "Fruit Ninja",
+    "image": "Images/fruitninja.png",
+    "link": "https://cdn.jsdelivr.net/gh/usheje883-maker/games@main/Games/singlefile/fruitninja.html",
+    "genre": "games"
+  },
+  {
+    "name": "Ragdoll Archers",
+    "image": "Images/ragdollarchers.png",
+    "link": "https://cdn.jsdelivr.net/gh/usheje883-maker/games@main/Games/singlefile/ragdollarchers.html",
+    "genre": "games"
+  },
+  {
+    "name": "Ragdoll Runners",
+    "image": "Images/ragdollrunners.png",
+    "link": "https://cdn.jsdelivr.net/gh/usheje883-maker/games@main/Games/singlefile/ragdollrunners.html",
+    "genre": "games"
+  },
+  {
+    "name": "Retro Bowl",
+    "image": "Images/retrobowl.png",
+    "link": "https://cdn.jsdelivr.net/gh/usheje883-maker/games@main/Games/singlefile/retrobowl.html",
+    "genre": "games"
+  },
+  {
+    "name": "Rocket Goal.io",
+    "image": "Images/rocketgoalio.png",
+    "link": "https://cdn.jsdelivr.net/gh/usheje883-maker/games@main/Games/singlefile/rocketgoalio.html",
+    "genre": "games"
+  },
+  {
+    "name": "Sandboxels",
+    "image": "Images/sandboxels.png",
+    "link": "https://cdn.jsdelivr.net/gh/usheje883-maker/games@main/Games/singlefile/sandboxels.html",
+    "genre": "games"
+  },
+  {
+    "name": "State.io",
+    "image": "Images/stateio.png",
+    "link": "https://cdn.jsdelivr.net/gh/usheje883-maker/games@main/Games/singlefile/stateio.html",
+    "genre": "games"
+  },
+  {
+    "name": "Stickman Hook",
+    "image": "Images/stickmanhook.png",
+    "link": "https://cdn.jsdelivr.net/gh/usheje883-maker/games@main/Games/singlefile/stickmanhook.html",
+    "genre": "games"
+  },
+  {
+    "name": "Subway Surfers New Orleans",
+    "image": "Images/subwaysurfersneworleans.png",
+    "link": "https://cdn.jsdelivr.net/gh/usheje883-maker/games@main/Games/singlefile/subwaysurfersneworleans.html",
+    "genre": "games"
+  }
 ]
