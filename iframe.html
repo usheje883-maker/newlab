@@ -67,9 +67,10 @@
 <script>
     const fullQuery = window.location.search.substring(1);
     const pageIframe = document.querySelector(".gameplayer");
+    const htmlCode = decodeURIComponent(fullQuery);
 
-    if (fullQuery) {
-        pageIframe.src = decodeURIComponent(fullQuery);
+    if (htmlCode) {
+        pageIframe.srcdoc = htmlCode;
     }
 
     function openInBlank() {
@@ -78,7 +79,7 @@
         if (newWindow) {
             const popupIframe = newWindow.document.createElement("iframe");
 
-            popupIframe.src = decodeURIComponent(fullQuery);
+            popupIframe.srcdoc = htmlCode;
             popupIframe.style.position = "fixed";
             popupIframe.style.top = "0";
             popupIframe.style.left = "0";
