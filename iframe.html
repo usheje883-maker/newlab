@@ -67,34 +67,61 @@
 <script>
     const fullQuery = window.location.search.substring(1);
     const pageIframe = document.querySelector(".gameplayer");
-    const htmlCode = decodeURIComponent(fullQuery);
+    const gameUrl = decodeURIComponent(fullQuery);
 
-    if (htmlCode) {
-        pageIframe.srcdoc = htmlCode;
-    }
+    async function loadGame() {
+        if (!gameUrl) return;
 
-    function openInBlank() {
-        const newWindow = window.open("about:blank", "_blank");
+        try {
+            const response = await fetch(gameUrl);
 
-        if (newWindow) {
-            const popupIframe = newWindow.document.createElement("iframe");
+            if (!response.ok) {
+                throw new Error("Failed to load HTML file");
+            }
 
-            popupIframe.srcdoc = htmlCode;
-            popupIframe.style.position = "fixed";
-            popupIframe.style.top = "0";
-            popupIframe.style.left = "0";
-            popupIframe.style.width = "100vw";
-            popupIframe.style.height = "100vh";
-            popupIframe.style.border = "none";
-            popupIframe.style.margin = "0";
-            popupIframe.style.padding = "0";
-            popupIframe.style.overflow = "hidden";
+            const html = await response.text();
 
-            newWindow.document.title = "Home - Classroom";
-            newWindow.document.body.style.margin = "0";
-            newWindow.document.body.appendChild(popupIframe);
-        } else {
-            alert("allow pop-ups man");
+            pageIframe.srcdoc = html;
+        } catch (error) {
+            pageIframe.srcdoc = `
+                <html>
+                    <body style="background:#111;color:white;font-family:Arial;text-align:center;padding-top:50px">
+                        <h1>Failed to load game</h1>
+                        <p>${error.message}</p>
+                    </body>
+                </html>
+            `;
         }
     }
+
+    async function openInBlank() {
+        const newWindow = window.open("about:blank", "_blank");
+
+        if (!newWindow) {
+            alert("allow pop-ups man");
+            return;
+        }
+
+        try {
+            const response = await fetch(gameUrl);
+
+            if (!response.ok) {
+                throw new Error("Failed to load HTML file");
+            }
+
+            const html = await response.text();
+
+            newWindow.document.open();
+            newWindow.document.write(html);
+            newWindow.document.close();
+            newWindow.document.title = "Home - Classroom";
+        } catch (error) {
+            newWindow.document.body.innerHTML = `
+                <h1>Failed to load game</h1>
+                <p>${error.message}</p>
+            `;
+        }
+    }
+
+    loadGame();
 </script>
