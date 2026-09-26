@@ -113,37 +113,37 @@
     const gamePlayer = document.querySelector(".gameplayer");
 
     function getGameUrl(url) {
-        if (url.includes("github.com/") && url.includes("/blob/")) {
-            const parts = new URL(url);
-            const path = parts.pathname.split("/");
+        try {
+            const parsed = new URL(url);
+            const path = parsed.pathname.split("/").filter(Boolean);
 
-            const user = path[1];
-            const repo = path[2];
-            const branch = path[4];
-            const filePath = path.slice(5).join("/");
-
-            return "https://cdn.jsdelivr.net/gh/" + user + "/" + repo + "@" + branch + "/" + filePath;
-        }
-
-        if (url.includes("raw.githubusercontent.com/")) {
-            return url;
-        }
-
-        if (url.includes("github.com/")) {
-            const parts = new URL(url);
-            const path = parts.pathname.split("/").filter(Boolean);
-
-            if (path.length >= 5 && path[3] === "tree") {
+            if (parsed.hostname === "github.com") {
                 const user = path[0];
                 const repo = path[1];
-                const branch = path[3];
-                const filePath = path.slice(4).join("/");
 
-                return "https://cdn.jsdelivr.net/gh/" + user + "/" + repo + "@" + branch + "/" + filePath + "/index.html";
+                if (path[2] === "blob" && path.length >= 5) {
+                    const branch = path[3];
+                    const filePath = path.slice(4).join("/");
+
+                    return "https://cdn.jsdelivr.net/gh/" + user + "/" + repo + "@" + branch + "/" + filePath;
+                }
+
+                if (path[2] === "tree" && path.length >= 4) {
+                    const branch = path[3];
+                    const filePath = path.slice(4).join("/");
+
+                    return "https://cdn.jsdelivr.net/gh/" + user + "/" + repo + "@" + branch + "/" + filePath + "/index.html";
+                }
             }
-        }
 
-        return url;
+            if (parsed.hostname === "raw.githubusercontent.com") {
+                return url;
+            }
+
+            return url;
+        } catch {
+            return url;
+        }
     }
 
     const finalGameUrl = getGameUrl(gameUrl);
