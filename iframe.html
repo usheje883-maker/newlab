@@ -1,3 +1,4 @@
+```html
 <style>
     body {
         margin: 0;
@@ -102,69 +103,28 @@
     <div class="gamecontainer">
         <iframe class="gameplayer"></iframe>
 
-    <div class="extrabuttons">
-        <button class="extrabutton" onclick="openInBlank()">Fullscreen</button>
+        <div class="extrabuttons">
+            <button class="extrabutton" onclick="openInBlank()">Fullscreen</button>
+        </div>
     </div>
-</div>
-
 </div>
 
 <script>
     const gameUrl = decodeURIComponent(window.location.search.substring(1));
     const gamePlayer = document.querySelector(".gameplayer");
 
-    async function loadGame() {
-        if (!gameUrl) return;
-
-        try {
-            const response = await fetch(gameUrl);
-
-            if (!response.ok) {
-                throw new Error("Failed to load HTML file");
-            }
-
-            const html = await response.text();
-            gamePlayer.srcdoc = html;
-        } catch (error) {
-            gamePlayer.srcdoc = `
-                <html>
-                    <body style="margin:0;background:#111;color:white;font-family:Arial;text-align:center;padding-top:50px">
-                        <h1>Failed to load game</h1>
-                        <p>${error.message}</p>
-                    </body>
-                </html>
-            `;
-        }
+    if (gameUrl) {
+        gamePlayer.src = gameUrl;
     }
 
-    async function openInBlank() {
-        const newWindow = window.open("about:blank", "_blank");
+    function openInBlank() {
+        if (!gameUrl) return;
+
+        const newWindow = window.open(gameUrl, "_blank");
 
         if (!newWindow) {
             alert("Please allow pop-ups to use fullscreen.");
-            return;
-        }
-
-        try {
-            const response = await fetch(gameUrl);
-
-            if (!response.ok) {
-                throw new Error("Failed to load HTML file");
-            }
-
-            const html = await response.text();
-
-            newWindow.document.open();
-            newWindow.document.write(html);
-            newWindow.document.close();
-            newWindow.document.title = "Home - Classroom";
-        } catch (error) {
-            newWindow.document.body.innerHTML = `
-                <h1>Failed to load game</h1>
-                <p>${error.message}</p>
-            `;
         }
     }
-
-    loadGame();
 </script>
+```
