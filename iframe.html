@@ -1,3 +1,4 @@
+```html
 <style>
     body {
         margin: 0;
@@ -100,7 +101,7 @@
 
 <div class="gamearea">
     <div class="gamecontainer">
-        <iframe class="gameplayer"></iframe>
+        <iframe class="gameplayer" allowfullscreen></iframe>
 
         <div class="extrabuttons">
             <button class="extrabutton" onclick="openInBlank()">Fullscreen</button>
@@ -112,17 +113,54 @@
     const gameUrl = decodeURIComponent(window.location.search.substring(1));
     const gamePlayer = document.querySelector(".gameplayer");
 
-    if (gameUrl) {
-        gamePlayer.src = gameUrl;
+    function getGameUrl(url) {
+        if (url.includes("github.com/") && url.includes("/blob/")) {
+            const parts = new URL(url);
+            const path = parts.pathname.split("/");
+
+            const user = path[1];
+            const repo = path[2];
+            const branch = path[4];
+            const filePath = path.slice(5).join("/");
+
+            return "https://cdn.jsdelivr.net/gh/" + user + "/" + repo + "@" + branch + "/" + filePath;
+        }
+
+        if (url.includes("raw.githubusercontent.com/")) {
+            return url;
+        }
+
+        if (url.includes("github.com/")) {
+            const parts = new URL(url);
+            const path = parts.pathname.split("/").filter(Boolean);
+
+            if (path.length >= 5 && path[3] === "tree") {
+                const user = path[0];
+                const repo = path[1];
+                const branch = path[3];
+                const filePath = path.slice(4).join("/");
+
+                return "https://cdn.jsdelivr.net/gh/" + user + "/" + repo + "@" + branch + "/" + filePath + "/index.html";
+            }
+        }
+
+        return url;
+    }
+
+    const finalGameUrl = getGameUrl(gameUrl);
+
+    if (finalGameUrl) {
+        gamePlayer.src = finalGameUrl;
     }
 
     function openInBlank() {
-        if (!gameUrl) return;
+        if (!finalGameUrl) return;
 
-        const newWindow = window.open(gameUrl, "_blank");
+        const newWindow = window.open(finalGameUrl, "_blank");
 
         if (!newWindow) {
             alert("Please allow pop-ups to use fullscreen.");
         }
     }
 </script>
+```
