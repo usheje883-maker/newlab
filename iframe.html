@@ -125,18 +125,22 @@
                     const branch = path[3];
                     const filePath = path.slice(4).join("/");
 
-                    return "https://cdn.jsdelivr.net/gh/" + user + "/" + repo + "@" + branch + "/" + filePath;
+                    return "https://raw.githubusercontent.com/" + user + "/" + repo + "/" + branch + "/" + filePath;
                 }
 
                 if (path[2] === "tree" && path.length >= 4) {
                     const branch = path[3];
                     const filePath = path.slice(4).join("/");
 
-                    return "https://cdn.jsdelivr.net/gh/" + user + "/" + repo + "@" + branch + "/" + filePath + "/index.html";
+                    return "https://raw.githubusercontent.com/" + user + "/" + repo + "/" + branch + "/" + filePath + "/index.html";
                 }
             }
 
             if (parsed.hostname === "raw.githubusercontent.com") {
+                return url;
+            }
+
+            if (parsed.hostname.includes("jsdelivr.net")) {
                 return url;
             }
 
@@ -146,19 +150,45 @@
         }
     }
 
+    async function loadGame(url) {
+        try {
+            const response = await fetch(url);
+
+            if (!response.ok) {
+                throw new Error("Failed to load game");
+            }
+
+            const html = await response.text();
+
+            const blob = new Blob([html], {
+                type: "text/html"
+            });
+
+            const blobUrl = URL.createObjectURL(blob);
+
+            gamePlayer.src = blobUrl;
+
+            window.currentGameUrl = blobUrl;
+        } catch (error) {
+            gamePlayer.srcdoc = `
+                <html>
+                    <body style="margin:0;background:#111;color:white;font-family:Arial;display:flex;align-items:center;justify-content:center;height:100vh;">
+                        <h2>Failed to load game</h2>
+                    </body>
+                </html>
+            `;
+        }
+    }
+
     const finalGameUrl = getGameUrl(gameUrl);
 
     if (finalGameUrl) {
-        gamePlayer.src = finalGameUrl;
+        loadGame(finalGameUrl);
     }
 
     function openInBlank() {
         if (!finalGameUrl) return;
 
-        const newWindow = window.open(finalGameUrl, "_blank");
-
-        if (!newWindow) {
-            alert("Please allow pop-ups to use fullscreen.");
-        }
+        window.open(finalGameUrl, "_blank");
     }
 </script>
