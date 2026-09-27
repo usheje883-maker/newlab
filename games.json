@@ -136,5 +136,23 @@
     "image": "Images/rooftopsnipers.png",
     "link": "https://cdn.jsdelivr.net/gh/usheje883-maker/games@main/Games/singlefile/rooftopsnipers.html",
     "genre": "games"
+  },
+  {
+    "name": "City Idle",
+    "image": "Images/rooftopsnipers.png",
+    "link": "https://cdn.jsdelivr.net/gh/ThatWirdGuy/City-Idle@main/index.html",
+    "genre": "games"
+  },
+  {
+    "name": "Mr President",
+    "image": "Images/rooftopsnipers.png",
+    "link": "https://cdn.jsdelivr.net/gh/ThatWirdGuy/Mr--President@main/index.html",
+    "genre": "games"
+  },
+  {
+    "name": "Powerline.io",
+    "image": "Images/rooftopsnipers.png",
+    "link": "https://cdn.jsdelivr.net/gh/ThatWirdGuy/Powerline.Io@main/index.html",
+    "genre": "games"
   }
 ]
