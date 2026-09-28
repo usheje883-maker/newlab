@@ -161,10 +161,10 @@
     "genre": "games"
   },
   {
-    "name": "Plauge Inc",
+    "name": "Plague Inc",
     "image": "Images/plauge.png",
     "link": "https://github.com/usheje883-maker/games/blob/main/Webports/singlefile/plauge.html",
-    "repo": "ThatWirdGuy/games@main",
-    "genre": "port"
+    "repo": "usheje883-maker/games@main",
+    "genre": "ports"
   }
 ]
