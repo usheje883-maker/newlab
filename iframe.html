@@ -125,19 +125,24 @@
                     const branch = path[3];
                     const filePath = path.slice(4).join("/");
 
-                    return "https://raw.githubusercontent.com/" + user + "/" + repo + "/" + branch + "/" + filePath;
+                    return "https://cdn.jsdelivr.net/gh/" + user + "/" + repo + "@" + branch + "/" + filePath;
                 }
 
                 if (path[2] === "tree" && path.length >= 4) {
                     const branch = path[3];
                     const filePath = path.slice(4).join("/");
 
-                    return "https://raw.githubusercontent.com/" + user + "/" + repo + "/" + branch + "/" + filePath + "/index.html";
+                    return "https://cdn.jsdelivr.net/gh/" + user + "/" + repo + "@" + branch + "/" + filePath + "/index.html";
                 }
             }
 
             if (parsed.hostname === "raw.githubusercontent.com") {
-                return url;
+                const user = path[0];
+                const repo = path[1];
+                const branch = path[2];
+                const filePath = path.slice(3).join("/");
+
+                return "https://cdn.jsdelivr.net/gh/" + user + "/" + repo + "@" + branch + "/" + filePath;
             }
 
             if (parsed.hostname.includes("jsdelivr.net")) {
@@ -158,7 +163,31 @@
                 throw new Error("Failed to load game");
             }
 
-            const html = await response.text();
+            let html = await response.text();
+            const baseUrl = url.substring(0, url.lastIndexOf("/") + 1);
+            const baseTagAndScripts = `
+                <base href="${baseUrl}">
+                <script>
+                    (function() {
+                        const base = "${baseUrl}";
+                        const origFetch = window.fetch;
+                        window.fetch = function(input, init) {
+                            if (typeof input === "string" && !/^(?:[a-z]+:)?\/\//i.test(input) && !input.startsWith("data:") && !input.startsWith("blob:")) {
+                                input = new URL(input, base).href;
+                            } else if (input instanceof Request && !/^(?:[a-z]+:)?\/\//i.test(input.url)) {
+                                input = new Request(new URL(input.url, base).href, input);
+                            }
+                            return origFetch.call(this, input, init);
+                        };
+                    })();
+                <\/script>
+            `;
+
+            if (/<head[^>]*>/i.test(html)) {
+                html = html.replace(/<head[^>]*>/i, `$&${baseTagAndScripts}`);
+            } else {
+                html = baseTagAndScripts + html;
+            }
 
             const blob = new Blob([html], {
                 type: "text/html"
