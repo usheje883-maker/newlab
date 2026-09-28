@@ -1,223 +1,257 @@
-<style>
-    body {
-        margin: 0;
-        background: #272727;
-        height: 100vh;
-        overflow: hidden;
-        font-family: Arial, sans-serif;
-    }
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Player</title>
+    <style>
+        body {
+            margin: 0;
+            background: #272727;
+            height: 100vh;
+            overflow: hidden;
+            font-family: Arial, sans-serif;
+        }
 
-    .sidebar {
-        position: fixed;
-        top: 0;
-        right: 0;
-        width: 150px;
-        height: 100vh;
-        background: #1e1e1e;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        gap: 30px;
-        z-index: 10;
-    }
+        .sidebar {
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 150px;
+            height: 100vh;
+            background: #1e1e1e;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 30px;
+            z-index: 10;
+        }
 
-    .button {
-        width: 100px;
-        height: 100px;
-        border: 0;
-        border-radius: 25px;
-        background: #252525;
-        color: white;
-        font-size: 23px;
-        font-weight: bold;
-        cursor: pointer;
-        transition: transform 0.25s ease, background 0.2s ease;
-    }
+        .button {
+            width: 100px;
+            height: 100px;
+            border: 0;
+            border-radius: 25px;
+            background: #252525;
+            color: white;
+            font-size: 23px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.25s ease, background 0.2s ease;
+        }
 
-    .button:hover {
-        background: #444;
-        transform: scale(1.08);
-    }
+        .button:hover {
+            background: #444;
+            transform: scale(1.08);
+        }
 
-    .gamearea {
-        width: calc(100% - 150px);
-        height: 100vh;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
+        .gamearea {
+            width: calc(100% - 150px);
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
 
-    .gamecontainer {
-        width: 75%;
-        height: 75%;
-        display: flex;
-        flex-direction: column;
-        overflow: hidden;
-        border-radius: 20px;
-    }
+        .gamecontainer {
+            width: 75%;
+            height: 75%;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            border-radius: 20px;
+        }
 
-    .gameplayer {
-        width: 100%;
-        height: calc(100% - 70px);
-        border: 0;
-        display: block;
-        background: #111;
-    }
+        .gameplayer {
+            width: 100%;
+            height: calc(100% - 70px);
+            border: 0;
+            display: block;
+            background: #111;
+        }
 
-    .extrabuttons {
-        width: 100%;
-        height: 70px;
-        background: #3d3d3d;
-        display: flex;
-        align-items: center;
-        padding-left: 15px;
-        box-sizing: border-box;
-    }
+        .extrabuttons {
+            width: 100%;
+            height: 70px;
+            background: #3d3d3d;
+            display: flex;
+            align-items: center;
+            padding-left: 15px;
+            box-sizing: border-box;
+        }
 
-    .extrabutton {
-        width: 150px;
-        height: 50px;
-        border: none;
-        border-radius: 12px;
-        background: #333;
-        color: white;
-        font-size: 18px;
-        font-weight: bold;
-        cursor: pointer;
-        transition: background 0.2s ease, transform 0.2s ease;
-    }
+        .extrabutton {
+            width: 150px;
+            height: 50px;
+            border: none;
+            border-radius: 12px;
+            background: #333;
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.2s ease, transform 0.2s ease;
+        }
 
-    .extrabutton:hover {
-        background: #4a4a4a;
-        transform: scale(1.04);
-    }
-</style>
+        .extrabutton:hover {
+            background: #4a4a4a;
+            transform: scale(1.04);
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <button class="button" onclick="location.href='/index.html'">Back</button>
+    </div>
 
-<div class="sidebar">
-    <button class="button" onclick="location.href='/index.html'">Back</button>
-</div>
+    <div class="gamearea">
+        <div class="gamecontainer">
+            <iframe class="gameplayer" allowfullscreen></iframe>
 
-<div class="gamearea">
-    <div class="gamecontainer">
-        <iframe class="gameplayer" allowfullscreen></iframe>
-
-        <div class="extrabuttons">
-            <button class="extrabutton" onclick="openInBlank()">Fullscreen</button>
+            <div class="extrabuttons">
+                <button class="extrabutton" onclick="openInBlank()">Fullscreen</button>
+            </div>
         </div>
     </div>
-</div>
 
-<script>
-    const gameUrl = decodeURIComponent(window.location.search.substring(1));
-    const gamePlayer = document.querySelector(".gameplayer");
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        let gameInput = urlParams.get("game") || decodeURIComponent(window.location.search.substring(1));
+        let repoInput = urlParams.get("repo");
 
-    function getGameUrl(url) {
-        try {
-            const parsed = new URL(url);
-            const path = parsed.pathname.split("/").filter(Boolean);
+        const gamePlayer = document.querySelector(".gameplayer");
+        let resolvedGameUrl = "";
 
-            if (parsed.hostname === "github.com") {
-                const user = path[0];
-                const repo = path[1];
+        function resolveCDNUrls(gameStr, repoStr) {
+            let fullUrl = gameStr;
+            let repoBaseUrl = "";
 
-                if (path[2] === "blob" && path.length >= 5) {
-                    const branch = path[3];
-                    const filePath = path.slice(4).join("/");
-
-                    return "https://cdn.jsdelivr.net/gh/" + user + "/" + repo + "@" + branch + "/" + filePath;
-                }
-
-                if (path[2] === "tree" && path.length >= 4) {
-                    const branch = path[3];
-                    const filePath = path.slice(4).join("/");
-
-                    return "https://cdn.jsdelivr.net/gh/" + user + "/" + repo + "@" + branch + "/" + filePath + "/index.html";
+            if (repoStr) {
+                const cleanRepo = repoStr.replace(/^https:\/\/cdn\.jsdelivr\.net\/gh\//, "").replace(/\/$/, "");
+                repoBaseUrl = "https://cdn.jsdelivr.net/gh/" + cleanRepo + "/";
+                
+                if (!gameStr.startsWith("http://") && !gameStr.startsWith("https://")) {
+                    fullUrl = repoBaseUrl + gameStr.replace(/^\//, "");
                 }
             }
 
-            if (parsed.hostname === "raw.githubusercontent.com") {
-                const user = path[0];
-                const repo = path[1];
-                const branch = path[2];
-                const filePath = path.slice(3).join("/");
+            try {
+                const parsed = new URL(fullUrl);
+                const path = parsed.pathname.split("/").filter(Boolean);
 
-                return "https://cdn.jsdelivr.net/gh/" + user + "/" + repo + "@" + branch + "/" + filePath;
-            }
+                if (parsed.hostname === "github.com" || parsed.hostname === "raw.githubusercontent.com") {
+                    const user = path[0];
+                    const repo = path[1];
+                    let branch = "main";
+                    let filePath = "";
 
-            if (parsed.hostname.includes("jsdelivr.net")) {
-                return url;
-            }
+                    if (parsed.hostname === "github.com") {
+                        branch = path[3] || "main";
+                        filePath = path.slice(4).join("/");
+                    } else {
+                        branch = path[2] || "main";
+                        filePath = path.slice(3).join("/");
+                    }
 
-            return url;
-        } catch {
-            return url;
+                    repoBaseUrl = "https://cdn.jsdelivr.net/gh/" + user + "/" + repo + "@" + branch + "/";
+                    fullUrl = repoBaseUrl + filePath;
+                } else if (parsed.hostname.includes("jsdelivr.net")) {
+                    const ghIndex = path.indexOf("gh");
+                    if (ghIndex !== -1 && path.length >= ghIndex + 3) {
+                        const user = path[ghIndex + 1];
+                        const repoAndBranch = path[ghIndex + 2];
+                        repoBaseUrl = "https://cdn.jsdelivr.net/gh/" + user + "/" + repoAndBranch + "/";
+                    }
+                }
+            } catch (e) {}
+
+            const dirBaseUrl = fullUrl.substring(0, fullUrl.lastIndexOf("/") + 1);
+            if (!repoBaseUrl) repoBaseUrl = dirBaseUrl;
+
+            return { fullUrl, dirBaseUrl, repoBaseUrl };
         }
-    }
 
-    async function loadGame(url) {
-        try {
-            const response = await fetch(url);
+        async function loadGame(gameStr, repoStr) {
+            try {
+                const { fullUrl, dirBaseUrl, repoBaseUrl } = resolveCDNUrls(gameStr, repoStr);
+                resolvedGameUrl = fullUrl;
 
-            if (!response.ok) {
-                throw new Error("Failed to load game");
-            }
+                const response = await fetch(fullUrl);
+                if (!response.ok) throw new Error("Failed to load game file");
 
-            let html = await response.text();
-            const baseUrl = url.substring(0, url.lastIndexOf("/") + 1);
-            const baseTagAndScripts = `
-                <base href="${baseUrl}">
-                <script>
-                    (function() {
-                        const base = "${baseUrl}";
-                        const origFetch = window.fetch;
-                        window.fetch = function(input, init) {
-                            if (typeof input === "string" && !/^(?:[a-z]+:)?\/\//i.test(input) && !input.startsWith("data:") && !input.startsWith("blob:")) {
-                                input = new URL(input, base).href;
-                            } else if (input instanceof Request && !/^(?:[a-z]+:)?\/\//i.test(input.url)) {
-                                input = new Request(new URL(input.url, base).href, input);
+                let html = await response.text();
+
+                const baseTagAndScripts = `
+                    <base href="${dirBaseUrl}">
+                    <script>
+                        (function() {
+                            const dirBase = "${dirBaseUrl}";
+                            const repoBase = "${repoBaseUrl}";
+
+                            function resolveUrl(url) {
+                                if (!url || typeof url !== "string") return url;
+                                if (/^(?:[a-z]+:)?\\/\\//i.test(url) || url.startsWith("data:") || url.startsWith("blob:")) {
+                                    return url;
+                                }
+                                if (url.startsWith("/")) {
+                                    return new URL(url.substring(1), repoBase).href;
+                                }
+                                return new URL(url, dirBase).href;
                             }
-                            return origFetch.call(this, input, init);
-                        };
-                    })();
-                <\/script>
-            `;
 
-            if (/<head[^>]*>/i.test(html)) {
-                html = html.replace(/<head[^>]*>/i, `$&${baseTagAndScripts}`);
-            } else {
-                html = baseTagAndScripts + html;
+                            const origFetch = window.fetch;
+                            window.fetch = function(input, init) {
+                                if (typeof input === "string") {
+                                    input = resolveUrl(input);
+                                } else if (input instanceof Request) {
+                                    input = new Request(resolveUrl(input.url), input);
+                                }
+                                return origFetch.call(this, input, init);
+                            };
+
+                            const origXHR = window.XMLHttpRequest.prototype.open;
+                            window.XMLHttpRequest.prototype.open = function(method, url, ...args) {
+                                return origXHR.call(this, method, resolveUrl(url), ...args);
+                            };
+
+                            const OrigWorker = window.Worker;
+                            window.Worker = function(scriptURL, options) {
+                                return new OrigWorker(resolveUrl(scriptURL), options);
+                            };
+                        })();
+                    <\/script>
+                `;
+
+                if (/<head[^>]*>/i.test(html)) {
+                    html = html.replace(/<head[^>]*>/i, "$&" + baseTagAndScripts);
+                } else {
+                    html = baseTagAndScripts + html;
+                }
+
+                const blob = new Blob([html], { type: "text/html" });
+                const blobUrl = URL.createObjectURL(blob);
+                gamePlayer.src = blobUrl;
+
+            } catch (error) {
+                gamePlayer.srcdoc = `
+                    <html>
+                        <body style="margin:0;background:#111;color:white;font-family:Arial;display:flex;align-items:center;justify-content:center;height:100vh;">
+                            <h2>Failed to load game from repository</h2>
+                        </body>
+                    </html>
+                `;
             }
-
-            const blob = new Blob([html], {
-                type: "text/html"
-            });
-
-            const blobUrl = URL.createObjectURL(blob);
-
-            gamePlayer.src = blobUrl;
-
-            window.currentGameUrl = blobUrl;
-        } catch (error) {
-            gamePlayer.srcdoc = `
-                <html>
-                    <body style="margin:0;background:#111;color:white;font-family:Arial;display:flex;align-items:center;justify-content:center;height:100vh;">
-                        <h2>Failed to load game</h2>
-                    </body>
-                </html>
-            `;
         }
-    }
 
-    const finalGameUrl = getGameUrl(gameUrl);
+        if (gameInput) {
+            loadGame(gameInput, repoInput);
+        }
 
-    if (finalGameUrl) {
-        loadGame(finalGameUrl);
-    }
-
-    function openInBlank() {
-        if (!finalGameUrl) return;
-
-        window.open(finalGameUrl, "_blank");
-    }
-</script>
+        function openInBlank() {
+            if (!resolvedGameUrl) return;
+            window.open(resolvedGameUrl, "_blank");
+        }
+    </script>
+</body>
+</html>
