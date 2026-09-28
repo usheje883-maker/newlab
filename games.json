@@ -161,24 +161,9 @@
     "genre": "games"
   },
   {
-    "name": "City Idle",
-    "image": "Images/rooftopsnipers.png",
-    "link": "https://cdn.jsdelivr.net/gh/ThatWirdGuy/City-Idle@main/index.html",
-    "repo": "ThatWirdGuy/City-Idle@main",
-    "genre": "games"
-  },
-  {
-    "name": "Mr President",
-    "image": "Images/rooftopsnipers.png",
-    "link": "https://cdn.jsdelivr.net/gh/usheje883-maker/games@main/Games/singlefile/mrpresident.html",
-    "repo": "ThatWirdGuy/Mr--President@main",
-    "genre": "games"
-  },
-  {
-    "name": "Powerline.io",
-    "image": "Images/rooftopsnipers.png",
-    "link": "https://cdn.jsdelivr.net/gh/ThatWirdGuy/Powerline.Io@main/index.html",
-    "repo": "ThatWirdGuy/Powerline.Io@main",
-    "genre": "games"
+    "name": "Plauge Inc",
+    "image": "Images/plauge.png",
+    "link": "https://github.com/usheje883-maker/games/blob/main/Webports/singlefile/plauge.html",
+    "repo": "ThatWirdGuy/games@main",
+    "genre": "port"
   }
-]
