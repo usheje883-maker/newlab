@@ -166,5 +166,12 @@
     "link": "https://github.com/usheje883-maker/games/blob/main/Webports/singlefile/plauge.html",
     "repo": "usheje883-maker/games@main",
     "genre": "ports"
+  },
+  {
+    "name": "Among Us",
+    "image": "Images/amongus.png",
+    "link": "https://cdn.jsdelivr.net/gh/usheje883-maker/games@main/Webports/singlefile/amongus.html",
+    "repo": "usheje883-maker/games@main",
+    "genre": "ports"
   }
 ]
