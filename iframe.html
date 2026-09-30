@@ -121,17 +121,25 @@
         let repoInput = urlParams.get("repo");
 
         const gamePlayer = document.querySelector(".gameplayer");
+
         let resolvedGameUrl = "";
+        let gameBlobUrl = "";
 
         function resolveCDNUrls(gameStr, repoStr) {
             let fullUrl = gameStr;
             let repoBaseUrl = "";
 
             if (repoStr) {
-                const cleanRepo = repoStr.replace(/^https:\/\/cdn\.jsdelivr\.net\/gh\//, "").replace(/\/$/, "");
+                const cleanRepo = repoStr
+                    .replace(/^https:\/\/cdn\.jsdelivr\.net\/gh\//, "")
+                    .replace(/\/$/, "");
+
                 repoBaseUrl = "https://cdn.jsdelivr.net/gh/" + cleanRepo + "/";
-                
-                if (!gameStr.startsWith("http://") && !gameStr.startsWith("https://")) {
+
+                if (
+                    !gameStr.startsWith("http://") &&
+                    !gameStr.startsWith("https://")
+                ) {
                     fullUrl = repoBaseUrl + gameStr.replace(/^\//, "");
                 }
             }
@@ -140,7 +148,10 @@
                 const parsed = new URL(fullUrl);
                 const path = parsed.pathname.split("/").filter(Boolean);
 
-                if (parsed.hostname === "github.com" || parsed.hostname === "raw.githubusercontent.com") {
+                if (
+                    parsed.hostname === "github.com" ||
+                    parsed.hostname === "raw.githubusercontent.com"
+                ) {
                     const user = path[0];
                     const repo = path[1];
                     let branch = "main";
@@ -154,31 +165,62 @@
                         filePath = path.slice(3).join("/");
                     }
 
-                    repoBaseUrl = "https://cdn.jsdelivr.net/gh/" + user + "/" + repo + "@" + branch + "/";
+                    repoBaseUrl =
+                        "https://cdn.jsdelivr.net/gh/" +
+                        user +
+                        "/" +
+                        repo +
+                        "@" +
+                        branch +
+                        "/";
+
                     fullUrl = repoBaseUrl + filePath;
                 } else if (parsed.hostname.includes("jsdelivr.net")) {
                     const ghIndex = path.indexOf("gh");
+
                     if (ghIndex !== -1 && path.length >= ghIndex + 3) {
                         const user = path[ghIndex + 1];
                         const repoAndBranch = path[ghIndex + 2];
-                        repoBaseUrl = "https://cdn.jsdelivr.net/gh/" + user + "/" + repoAndBranch + "/";
+
+                        repoBaseUrl =
+                            "https://cdn.jsdelivr.net/gh/" +
+                            user +
+                            "/" +
+                            repoAndBranch +
+                            "/";
                     }
                 }
             } catch (e) {}
 
-            const dirBaseUrl = fullUrl.substring(0, fullUrl.lastIndexOf("/") + 1);
-            if (!repoBaseUrl) repoBaseUrl = dirBaseUrl;
+            const dirBaseUrl =
+                fullUrl.substring(0, fullUrl.lastIndexOf("/") + 1);
 
-            return { fullUrl, dirBaseUrl, repoBaseUrl };
+            if (!repoBaseUrl) {
+                repoBaseUrl = dirBaseUrl;
+            }
+
+            return {
+                fullUrl,
+                dirBaseUrl,
+                repoBaseUrl
+            };
         }
 
         async function loadGame(gameStr, repoStr) {
             try {
-                const { fullUrl, dirBaseUrl, repoBaseUrl } = resolveCDNUrls(gameStr, repoStr);
+                const {
+                    fullUrl,
+                    dirBaseUrl,
+                    repoBaseUrl
+                } = resolveCDNUrls(gameStr, repoStr);
+
                 resolvedGameUrl = fullUrl;
 
                 const response = await fetch(fullUrl);
-                if (!response.ok) throw new Error("Failed to load game file");
+
+                if (!response.ok) {
+                    throw new Error("Failed to load game file");
+                }
 
                 let html = await response.text();
 
@@ -190,53 +232,99 @@
                             const repoBase = "${repoBaseUrl}";
 
                             function resolveUrl(url) {
-                                if (!url || typeof url !== "string") return url;
-                                if (/^(?:[a-z]+:)?\\/\\//i.test(url) || url.startsWith("data:") || url.startsWith("blob:")) {
+                                if (!url || typeof url !== "string") {
                                     return url;
                                 }
-                                if (url.startsWith("/")) {
-                                    return new URL(url.substring(1), repoBase).href;
+
+                                if (
+                                    /^(?:[a-z]+:)?\\\\/\\\\//i.test(url) ||
+                                    url.startsWith("data:") ||
+                                    url.startsWith("blob:")
+                                ) {
+                                    return url;
                                 }
+
+                                if (url.startsWith("/")) {
+                                    return new URL(
+                                        url.substring(1),
+                                        repoBase
+                                    ).href;
+                                }
+
                                 return new URL(url, dirBase).href;
                             }
 
                             const origFetch = window.fetch;
+
                             window.fetch = function(input, init) {
                                 if (typeof input === "string") {
                                     input = resolveUrl(input);
                                 } else if (input instanceof Request) {
-                                    input = new Request(resolveUrl(input.url), input);
+                                    input = new Request(
+                                        resolveUrl(input.url),
+                                        input
+                                    );
                                 }
+
                                 return origFetch.call(this, input, init);
                             };
 
-                            const origXHR = window.XMLHttpRequest.prototype.open;
-                            window.XMLHttpRequest.prototype.open = function(method, url, ...args) {
-                                return origXHR.call(this, method, resolveUrl(url), ...args);
-                            };
+                            const origXHR =
+                                window.XMLHttpRequest.prototype.open;
+
+                            window.XMLHttpRequest.prototype.open =
+                                function(method, url, ...args) {
+                                    return origXHR.call(
+                                        this,
+                                        method,
+                                        resolveUrl(url),
+                                        ...args
+                                    );
+                                };
 
                             const OrigWorker = window.Worker;
+
                             window.Worker = function(scriptURL, options) {
-                                return new OrigWorker(resolveUrl(scriptURL), options);
+                                return new OrigWorker(
+                                    resolveUrl(scriptURL),
+                                    options
+                                );
                             };
                         })();
                     <\/script>
                 `;
 
                 if (/<head[^>]*>/i.test(html)) {
-                    html = html.replace(/<head[^>]*>/i, "$&" + baseTagAndScripts);
+                    html = html.replace(
+                        /<head[^>]*>/i,
+                        "$&" + baseTagAndScripts
+                    );
                 } else {
                     html = baseTagAndScripts + html;
                 }
 
-                const blob = new Blob([html], { type: "text/html" });
-                const blobUrl = URL.createObjectURL(blob);
-                gamePlayer.src = blobUrl;
+                const blob = new Blob(
+                    [html],
+                    { type: "text/html" }
+                );
+
+                gameBlobUrl = URL.createObjectURL(blob);
+
+                gamePlayer.src = gameBlobUrl;
 
             } catch (error) {
                 gamePlayer.srcdoc = `
                     <html>
-                        <body style="margin:0;background:#111;color:white;font-family:Arial;display:flex;align-items:center;justify-content:center;height:100vh;">
+                        <body style="
+                            margin:0;
+                            background:#111;
+                            color:white;
+                            font-family:Arial;
+                            display:flex;
+                            align-items:center;
+                            justify-content:center;
+                            height:100vh;
+                        ">
                             <h2>Failed to load game from repository</h2>
                         </body>
                     </html>
@@ -249,8 +337,18 @@
         }
 
         function openInBlank() {
-            if (!resolvedGameUrl) return;
-            window.open(resolvedGameUrl, "_blank");
+            if (!gameBlobUrl) {
+                return;
+            }
+
+            const newWindow = window.open(
+                gameBlobUrl,
+                "_blank"
+            );
+
+            if (newWindow) {
+                newWindow.focus();
+            }
         }
     </script>
 </body>
