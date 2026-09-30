@@ -123,7 +123,7 @@
         const gamePlayer = document.querySelector(".gameplayer");
 
         let resolvedGameUrl = "";
-        let gameBlobUrl = "";
+        let processedGameHTML = "";
 
         function resolveCDNUrls(gameStr, repoStr) {
             let fullUrl = gameStr;
@@ -303,14 +303,16 @@
                     html = baseTagAndScripts + html;
                 }
 
+                processedGameHTML = html;
+
                 const blob = new Blob(
                     [html],
                     { type: "text/html" }
                 );
 
-                gameBlobUrl = URL.createObjectURL(blob);
+                const blobUrl = URL.createObjectURL(blob);
 
-                gamePlayer.src = gameBlobUrl;
+                gamePlayer.src = blobUrl;
 
             } catch (error) {
                 gamePlayer.srcdoc = `
@@ -337,18 +339,21 @@
         }
 
         function openInBlank() {
-            if (!gameBlobUrl) {
+            if (!processedGameHTML) {
                 return;
             }
 
-            const newWindow = window.open(
-                gameBlobUrl,
-                "_blank"
-            );
+            const newWindow = window.open("about:blank", "_blank");
 
-            if (newWindow) {
-                newWindow.focus();
+            if (!newWindow) {
+                return;
             }
+
+            newWindow.document.open();
+            newWindow.document.write(processedGameHTML);
+            newWindow.document.close();
+
+            newWindow.focus();
         }
     </script>
 </body>
