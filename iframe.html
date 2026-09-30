@@ -77,6 +77,7 @@
             background: #3d3d3d;
             display: flex;
             align-items: center;
+            gap: 15px;
             padding-left: 15px;
             box-sizing: border-box;
         }
@@ -98,6 +99,16 @@
             background: #4a4a4a;
             transform: scale(1.04);
         }
+
+        .gamecontainer:fullscreen {
+            width: 100vw;
+            height: 100vh;
+            border-radius: 0;
+        }
+
+        .gamecontainer:fullscreen .gameplayer {
+            height: calc(100% - 70px);
+        }
     </style>
 </head>
 <body>
@@ -110,7 +121,8 @@
             <iframe class="gameplayer" allowfullscreen></iframe>
 
             <div class="extrabuttons">
-                <button class="extrabutton" onclick="openInBlank()">Fullscreen</button>
+                <button class="extrabutton" onclick="openInBlank()">Open in New Tab</button>
+                <button class="extrabutton" onclick="fullscreenGame()">Fullscreen</button>
             </div>
         </div>
     </div>
@@ -121,6 +133,7 @@
         let repoInput = urlParams.get("repo");
 
         const gamePlayer = document.querySelector(".gameplayer");
+        const gameContainer = document.querySelector(".gamecontainer");
 
         let resolvedGameUrl = "";
         let processedGameHTML = "";
@@ -352,8 +365,15 @@
             newWindow.document.open();
             newWindow.document.write(processedGameHTML);
             newWindow.document.close();
-
             newWindow.focus();
+        }
+
+        function fullscreenGame() {
+            if (!document.fullscreenElement) {
+                gameContainer.requestFullscreen();
+            } else {
+                document.exitFullscreen();
+            }
         }
     </script>
 </body>
