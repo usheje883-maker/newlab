@@ -129,7 +129,13 @@
 
     <script>
         const urlParams = new URLSearchParams(window.location.search);
-        let gameInput = urlParams.get("game") || decodeURIComponent(window.location.search.substring(1));
+        const rawSearch = window.location.search.substring(1);
+        let gameInput = urlParams.get("game");
+
+        if (!gameInput && rawSearch && !rawSearch.includes("=")) {
+            gameInput = decodeURIComponent(rawSearch);
+        }
+
         let repoInput = urlParams.get("repo");
 
         const gamePlayer = document.querySelector(".gameplayer");
@@ -137,6 +143,7 @@
 
         let resolvedGameUrl = "";
         let processedGameHTML = "";
+        let currentBlobUrl = null;
 
         function resolveCDNUrls(gameStr, repoStr) {
             let fullUrl = gameStr;
@@ -151,14 +158,16 @@
 
                 if (
                     !gameStr.startsWith("http://") &&
-                    !gameStr.startsWith("https://")
+                    !gameStr.startsWith("https://") &&
+                    !gameStr.startsWith("//")
                 ) {
                     fullUrl = repoBaseUrl + gameStr.replace(/^\//, "");
                 }
             }
 
             try {
-                const parsed = new URL(fullUrl);
+                const parsed = new URL(fullUrl, window.location.href);
+                fullUrl = parsed.href;
                 const path = parsed.pathname.split("/").filter(Boolean);
 
                 if (
@@ -171,8 +180,13 @@
                     let filePath = "";
 
                     if (parsed.hostname === "github.com") {
-                        branch = path[3] || "main";
-                        filePath = path.slice(4).join("/");
+                        if (path[2] === "blob" || path[2] === "raw" || path[2] === "tree") {
+                            branch = path[3] || "main";
+                            filePath = path.slice(4).join("/");
+                        } else {
+                            branch = path[2] || "main";
+                            filePath = path.slice(3).join("/");
+                        }
                     } else {
                         branch = path[2] || "main";
                         filePath = path.slice(3).join("/");
@@ -250,9 +264,11 @@
                                 }
 
                                 if (
-                                    /^(?:[a-z]+:)?\\\\/\\\\//i.test(url) ||
+                                    /^(?:[a-z][a-z0-9+.-]*:|\/\/)/i.test(url) ||
                                     url.startsWith("data:") ||
-                                    url.startsWith("blob:")
+                                    url.startsWith("blob:") ||
+                                    url.startsWith("#") ||
+                                    url.startsWith("javascript:")
                                 ) {
                                     return url;
                                 }
@@ -272,6 +288,8 @@
                             window.fetch = function(input, init) {
                                 if (typeof input === "string") {
                                     input = resolveUrl(input);
+                                } else if (input instanceof URL) {
+                                    input = resolveUrl(input.href);
                                 } else if (input instanceof Request) {
                                     input = new Request(
                                         resolveUrl(input.url),
@@ -295,14 +313,14 @@
                                     );
                                 };
 
-                            const OrigWorker = window.Worker;
-
-                            window.Worker = function(scriptURL, options) {
-                                return new OrigWorker(
-                                    resolveUrl(scriptURL),
-                                    options
-                                );
-                            };
+                            if (window.Worker) {
+                                const OrigWorker = window.Worker;
+                                window.Worker = class extends OrigWorker {
+                                    constructor(scriptURL, options) {
+                                        super(resolveUrl(scriptURL), options);
+                                    }
+                                };
+                            }
                         })();
                     <\/script>
                 `;
@@ -312,29 +330,38 @@
                         /<head[^>]*>/i,
                         "$&" + baseTagAndScripts
                     );
+                } else if (/<html[^>]*>/i.test(html)) {
+                    html = html.replace(
+                        /<html[^>]*>/i,
+                        "$&<head>" + baseTagAndScripts + "</head>"
+                    );
                 } else {
                     html = baseTagAndScripts + html;
                 }
 
                 processedGameHTML = html;
 
+                if (currentBlobUrl) {
+                    URL.revokeObjectURL(currentBlobUrl);
+                }
+
                 const blob = new Blob(
                     [html],
                     { type: "text/html" }
                 );
 
-                const blobUrl = URL.createObjectURL(blob);
-
-                gamePlayer.src = blobUrl;
+                currentBlobUrl = URL.createObjectURL(blob);
+                gamePlayer.src = currentBlobUrl;
 
             } catch (error) {
                 gamePlayer.srcdoc = `
+                    <!DOCTYPE html>
                     <html>
                         <body style="
                             margin:0;
                             background:#111;
                             color:white;
-                            font-family:Arial;
+                            font-family:Arial, sans-serif;
                             display:flex;
                             align-items:center;
                             justify-content:center;
@@ -370,9 +397,17 @@
 
         function fullscreenGame() {
             if (!document.fullscreenElement) {
-                gameContainer.requestFullscreen();
+                if (gameContainer.requestFullscreen) {
+                    gameContainer.requestFullscreen();
+                } else if (gameContainer.webkitRequestFullscreen) {
+                    gameContainer.webkitRequestFullscreen();
+                }
             } else {
-                document.exitFullscreen();
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                } else if (document.webkitExitFullscreen) {
+                    document.webkitExitFullscreen();
+                }
             }
         }
     </script>
