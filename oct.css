@@ -13,7 +13,6 @@ body {
   right: 0;
   width: 150px;
   height: 100vh;
-  height: 100dvh;
   background-color: #17100C;
   display: flex;
   flex-direction: column;
@@ -58,7 +57,8 @@ body {
 .games {
   background-color: #1E1612;
   height: 100vh;
-  height: 100dvh;
+  width: calc(100% - 150px);
+  margin-right: 150px;
   flex-grow: 1;
   order: 1;
   padding: 20px;
@@ -128,15 +128,19 @@ body {
 
 .gamearea {
   width: calc(100% - 150px);
+  margin-right: 150px;
   height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
+  overflow: hidden;
+  box-sizing: border-box;
 }
 
 .gamecontainer {
   width: 75%;
   height: 75%;
+  max-width: 100%;
   display: flex;
   flex-direction: column;
   overflow: hidden;
