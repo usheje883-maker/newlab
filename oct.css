@@ -1,17 +1,5 @@
-:root {
-    --bg: #1E1612;          /* deep espresso */
-    --sidebar: #17100C;     /* slightly darker than bg */
-    --tile: #2B1F18;        /* warm dark brown */
-    --tile-hover: #3A2A20;
-    --accent: #D9631E;      /* burnt orange */
-    --amber: #E8A33D;       /* golden amber */
-    --rust: #B5412A;
-    --text: #F5E6D0;        /* warm cream */
-    --muted: #A68B6E;       /* dusty tan */
-}
-
 body {
-    background-color: var(--bg);
+    background-color: #1E1612;
     margin: 0;
     display: flex;
     height: 100vh;
@@ -20,7 +8,7 @@ body {
 }
 
 .sidebar {
-    background-color: var(--sidebar);
+    background-color: #1e1e1e;
     width: 150px;
     height: 100vh;
     height: 100dvh;
@@ -41,9 +29,9 @@ body {
     height: 100px;
     flex-shrink: 0;
     border-radius: 25px;
-    background-color: var(--tile);
+    background-color: #252525;
     border: none;
-    color: var(--text);
+    color: white;
     font-family: Arial, Helvetica, sans-serif;
     font-size: 25px;
     cursor: pointer;
@@ -54,20 +42,19 @@ body {
 
 .button:hover {
     transform: scale(1.15);
-    background-color: var(--rust);
+    background-color: #444444;
 }
 
 .button:focus-visible {
-    outline: 2px solid var(--amber);
+    outline: 2px solid white;
 }
 
 .button.active {
-    background-color: var(--accent);
-    color: var(--text);
+    background-color: #D9631E;
 }
 
 .games {
-    background-color: var(--bg);
+    background-color: #272727;
     height: 100vh;
     height: 100dvh;
     flex-grow: 1;
@@ -82,14 +69,14 @@ body {
 }
 
 .games p {
-    color: var(--text);
+    color: white;
     font-family: Arial, Helvetica, sans-serif;
     font-size: 18px;
     margin: 0;
 }
 
 .gameentry {
-    background-color: var(--tile);
+    background-color: #2B1F18;
     height: 230px;
     width: 180px;
     min-width: 180px;
@@ -103,14 +90,12 @@ body {
     cursor: pointer;
     overflow: hidden;
     -webkit-tap-highlight-color: transparent;
-    box-shadow: inset 0 0 0 2px transparent;
-    transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+    transition: transform 0.2s ease, background-color 0.2s ease;
 }
 
 .gameentry:hover {
     transform: scale(1.05);
-    background-color: var(--tile-hover);
-    box-shadow: inset 0 0 0 2px var(--amber), 0 0 18px rgba(232, 163, 61, 0.35);
+    background-color: #151515;
 }
 
 .gameentry img {
@@ -123,7 +108,7 @@ body {
 }
 
 .gameentry h1 {
-    color: var(--text);
+    color: white;
     font-family: Arial, Helvetica, sans-serif;
     font-weight: 700;
     margin: 0;
