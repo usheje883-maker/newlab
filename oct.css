@@ -1,0 +1,140 @@
+:root {
+    --bg: #1E1612;          /* deep espresso */
+    --sidebar: #17100C;     /* slightly darker than bg */
+    --tile: #2B1F18;        /* warm dark brown */
+    --tile-hover: #3A2A20;
+    --accent: #D9631E;      /* burnt orange */
+    --amber: #E8A33D;       /* golden amber */
+    --rust: #B5412A;
+    --text: #F5E6D0;        /* warm cream */
+    --muted: #A68B6E;       /* dusty tan */
+}
+
+body {
+    background-color: var(--bg);
+    margin: 0;
+    display: flex;
+    height: 100vh;
+    height: 100dvh;
+    overflow: hidden;
+}
+
+.sidebar {
+    background-color: var(--sidebar);
+    width: 150px;
+    height: 100vh;
+    height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 30px;
+    order: 2;
+    flex-shrink: 0;
+    overflow-y: auto;
+    padding: 20px 0;
+    box-sizing: border-box;
+}
+
+.button {
+    width: 100px;
+    height: 100px;
+    flex-shrink: 0;
+    border-radius: 25px;
+    background-color: var(--tile);
+    border: none;
+    color: var(--text);
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 25px;
+    cursor: pointer;
+    font-weight: bold;
+    -webkit-tap-highlight-color: transparent;
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), background-color 0.2s ease;
+}
+
+.button:hover {
+    transform: scale(1.15);
+    background-color: var(--rust);
+}
+
+.button:focus-visible {
+    outline: 2px solid var(--amber);
+}
+
+.button.active {
+    background-color: var(--accent);
+    color: var(--text);
+}
+
+.games {
+    background-color: var(--bg);
+    height: 100vh;
+    height: 100dvh;
+    flex-grow: 1;
+    order: 1;
+    padding: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    align-content: flex-start;
+    gap: 20px;
+    overflow-y: auto;
+    box-sizing: border-box;
+}
+
+.games p {
+    color: var(--text);
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 18px;
+    margin: 0;
+}
+
+.gameentry {
+    background-color: var(--tile);
+    height: 230px;
+    width: 180px;
+    min-width: 180px;
+    border-radius: 10px;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    cursor: pointer;
+    overflow: hidden;
+    -webkit-tap-highlight-color: transparent;
+    box-shadow: inset 0 0 0 2px transparent;
+    transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.gameentry:hover {
+    transform: scale(1.05);
+    background-color: var(--tile-hover);
+    box-shadow: inset 0 0 0 2px var(--amber), 0 0 18px rgba(232, 163, 61, 0.35);
+}
+
+.gameentry img {
+    background-color: #181818;
+    width: 150px;
+    height: 150px;
+    object-fit: contain;
+    border-radius: 10px;
+    flex-shrink: 0;
+}
+
+.gameentry h1 {
+    color: var(--text);
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: 700;
+    margin: 0;
+    padding: 0 8px;
+    font-size: 18px;
+    line-height: 22px;
+    max-height: 44px;
+    text-align: center;
+    max-width: 164px;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
