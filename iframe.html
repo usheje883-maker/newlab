@@ -251,76 +251,87 @@
 
                 let html = await response.text();
 
+                html = html
+                    .replace(/(\s(?:src|href|data-src|poster)\s*=\s*["'])\/(?!\/)/gi, "$1" + repoBaseUrl)
+                    .replace(/url\(\s*(["']?)\/(?!\/)/gi, "url($1" + repoBaseUrl);
+
                 const baseTagAndScripts = `
                     <base href="${dirBaseUrl}">
                     <script>
                         (function() {
                             const dirBase = "${dirBaseUrl}";
                             const repoBase = "${repoBaseUrl}";
+                            const parentOrigin = "${window.location.origin}";
 
-                            function resolveUrl(url) {
-                                if (!url || typeof url !== "string") {
+                            function fix(url) {
+                                if (!url || typeof url !== "string") return url;
+                                if (/^(data:|blob:|javascript:|#|about:)/i.test(url)) return url;
+                                try {
+                                    const u = new URL(url, dirBase);
+                                    const wrongHost =
+                                        u.origin === parentOrigin ||
+                                        (u.origin === "https://cdn.jsdelivr.net" &&
+                                         !u.pathname.startsWith("/gh/") &&
+                                         !u.pathname.startsWith("/npm/"));
+                                    if (wrongHost) {
+                                        return new URL(
+                                            u.pathname.replace(/^\\//, "") + u.search + u.hash,
+                                            repoBase
+                                        ).href;
+                                    }
+                                    return u.href;
+                                } catch (e) {
                                     return url;
                                 }
-
-                                if (
-                                    /^(?:[a-z][a-z0-9+.-]*:|\/\/)/i.test(url) ||
-                                    url.startsWith("data:") ||
-                                    url.startsWith("blob:") ||
-                                    url.startsWith("#") ||
-                                    url.startsWith("javascript:")
-                                ) {
-                                    return url;
-                                }
-
-                                if (url.startsWith("/")) {
-                                    return new URL(
-                                        url.substring(1),
-                                        repoBase
-                                    ).href;
-                                }
-
-                                return new URL(url, dirBase).href;
                             }
 
                             const origFetch = window.fetch;
-
                             window.fetch = function(input, init) {
-                                if (typeof input === "string") {
-                                    input = resolveUrl(input);
-                                } else if (input instanceof URL) {
-                                    input = resolveUrl(input.href);
-                                } else if (input instanceof Request) {
-                                    input = new Request(
-                                        resolveUrl(input.url),
-                                        input
-                                    );
-                                }
-
+                                if (typeof input === "string") input = fix(input);
+                                else if (input instanceof URL) input = fix(input.href);
+                                else if (input instanceof Request) input = new Request(fix(input.url), input);
                                 return origFetch.call(this, input, init);
                             };
 
-                            const origXHR =
-                                window.XMLHttpRequest.prototype.open;
-
-                            window.XMLHttpRequest.prototype.open =
-                                function(method, url, ...args) {
-                                    return origXHR.call(
-                                        this,
-                                        method,
-                                        resolveUrl(url),
-                                        ...args
-                                    );
-                                };
+                            const origOpen = XMLHttpRequest.prototype.open;
+                            XMLHttpRequest.prototype.open = function(method, url, ...rest) {
+                                return origOpen.call(this, method, fix(String(url)), ...rest);
+                            };
 
                             if (window.Worker) {
                                 const OrigWorker = window.Worker;
                                 window.Worker = class extends OrigWorker {
-                                    constructor(scriptURL, options) {
-                                        super(resolveUrl(scriptURL), options);
-                                    }
+                                    constructor(url, opts) { super(fix(String(url)), opts); }
                                 };
                             }
+
+                            const OrigAudio = window.Audio;
+                            window.Audio = function(src) {
+                                return new OrigAudio(src ? fix(src) : src);
+                            };
+
+                            [
+                                [HTMLImageElement, "src"],
+                                [HTMLScriptElement, "src"],
+                                [HTMLMediaElement, "src"],
+                                [HTMLSourceElement, "src"],
+                                [HTMLLinkElement, "href"],
+                                [HTMLIFrameElement, "src"]
+                            ].forEach(([cls, prop]) => {
+                                const desc = Object.getOwnPropertyDescriptor(cls.prototype, prop);
+                                if (!desc || !desc.set) return;
+                                Object.defineProperty(cls.prototype, prop, {
+                                    get: desc.get,
+                                    set(v) { desc.set.call(this, fix(String(v))); },
+                                    configurable: true
+                                });
+                            });
+
+                            const origSetAttr = Element.prototype.setAttribute;
+                            Element.prototype.setAttribute = function(name, value) {
+                                if (/^(src|href|data-src|poster)$/i.test(name)) value = fix(String(value));
+                                return origSetAttr.call(this, name, value);
+                            };
                         })();
                     <\/script>
                 `;
