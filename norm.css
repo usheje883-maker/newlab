@@ -13,7 +13,6 @@ body {
   right: 0;
   width: 150px;
   height: 100vh;
-  height: 100dvh;
   background-color: #1e1e1e;
   display: flex;
   flex-direction: column;
@@ -58,7 +57,7 @@ body {
 .games {
   background-color: #272727;
   height: 100vh;
-  height: 100dvh;
+  width: 90vw;
   flex-grow: 1;
   order: 1;
   padding: 20px;
