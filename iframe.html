@@ -31,218 +31,40 @@
             gameInput = decodeURIComponent(rawSearch);
         }
 
-        let repoInput = urlParams.get("repo");
-
         const gamePlayer = document.querySelector(".gameplayer");
         const gameContainer = document.querySelector(".gamecontainer");
 
-        let resolvedGameUrl = "";
         let processedGameHTML = "";
         let currentBlobUrl = null;
 
-        function resolveCDNUrls(gameStr, repoStr) {
-            let fullUrl = gameStr;
-            let repoBaseUrl = "";
-
-            if (repoStr) {
-                const cleanRepo = repoStr
-                    .replace(/^https:\/\/cdn\.jsdelivr\.net\/gh\//, "")
-                    .replace(/\/$/, "");
-
-                repoBaseUrl = "https://cdn.jsdelivr.net/gh/" + cleanRepo + "/";
-
-                if (
-                    !gameStr.startsWith("http://") &&
-                    !gameStr.startsWith("https://") &&
-                    !gameStr.startsWith("//")
-                ) {
-                    fullUrl = repoBaseUrl + gameStr.replace(/^\//, "");
-                }
-            }
-
-            try {
-                const parsed = new URL(fullUrl, window.location.href);
-                fullUrl = parsed.href;
-                const path = parsed.pathname.split("/").filter(Boolean);
-
-                if (
-                    parsed.hostname === "github.com" ||
-                    parsed.hostname === "raw.githubusercontent.com"
-                ) {
-                    const user = path[0];
-                    const repo = path[1];
-                    let branch = "main";
-                    let filePath = "";
-
-                    if (parsed.hostname === "github.com") {
-                        if (path[2] === "blob" || path[2] === "raw" || path[2] === "tree") {
-                            branch = path[3] || "main";
-                            filePath = path.slice(4).join("/");
-                        } else {
-                            branch = path[2] || "main";
-                            filePath = path.slice(3).join("/");
-                        }
-                    } else {
-                        branch = path[2] || "main";
-                        filePath = path.slice(3).join("/");
-                    }
-
-                    repoBaseUrl =
-                        "https://cdn.jsdelivr.net/gh/" +
-                        user +
-                        "/" +
-                        repo +
-                        "@" +
-                        branch +
-                        "/";
-
-                    fullUrl = repoBaseUrl + filePath;
-                } else if (parsed.hostname.includes("jsdelivr.net")) {
-                    const ghIndex = path.indexOf("gh");
-
-                    if (ghIndex !== -1 && path.length >= ghIndex + 3) {
-                        const user = path[ghIndex + 1];
-                        const repoAndBranch = path[ghIndex + 2];
-
-                        repoBaseUrl =
-                            "https://cdn.jsdelivr.net/gh/" +
-                            user +
-                            "/" +
-                            repoAndBranch +
-                            "/";
-                    }
-                }
-            } catch (e) {}
-
-            const dirBaseUrl =
-                fullUrl.substring(0, fullUrl.lastIndexOf("/") + 1);
-
-            if (!repoBaseUrl) {
-                repoBaseUrl = dirBaseUrl;
-            }
-
-            return {
-                fullUrl,
-                dirBaseUrl,
-                repoBaseUrl
-            };
+        function showError(message) {
+            gamePlayer.srcdoc =
+                '<!DOCTYPE html><html><body style="margin:0;background:#111;color:#fff;' +
+                'font-family:Arial,sans-serif;display:flex;align-items:center;' +
+                'justify-content:center;height:100vh;text-align:center;">' +
+                "<h2>" + message + "</h2></body></html>";
         }
 
-        async function loadGame(gameStr, repoStr) {
+        async function loadGame(gameStr) {
             try {
-                const {
-                    fullUrl,
-                    dirBaseUrl,
-                    repoBaseUrl
-                } = resolveCDNUrls(gameStr, repoStr);
-
-                resolvedGameUrl = fullUrl;
+                const fullUrl = new URL(gameStr, window.location.href).href;
+                const dirBaseUrl = fullUrl.substring(0, fullUrl.lastIndexOf("/") + 1);
 
                 const response = await fetch(fullUrl);
-
                 if (!response.ok) {
-                    throw new Error("Failed to load game file");
+                    throw new Error("HTTP " + response.status);
                 }
 
                 let html = await response.text();
 
-                html = html
-                    .replace(/(\s(?:src|href|data-src|poster)\s*=\s*["'])\/(?!\/)/gi, "$1" + repoBaseUrl)
-                    .replace(/url\(\s*(["']?)\/(?!\/)/gi, "url($1" + repoBaseUrl);
-
-                const baseTagAndScripts = `
-                    <base href="${dirBaseUrl}">
-                    <script>
-                        (function() {
-                            const dirBase = "${dirBaseUrl}";
-                            const repoBase = "${repoBaseUrl}";
-                            const parentOrigin = "${window.location.origin}";
-
-                            function fix(url) {
-                                if (!url || typeof url !== "string") return url;
-                                if (/^(data:|blob:|javascript:|#|about:)/i.test(url)) return url;
-                                try {
-                                    const u = new URL(url, dirBase);
-                                    const wrongHost =
-                                        u.origin === parentOrigin ||
-                                        (u.origin === "https://cdn.jsdelivr.net" &&
-                                         !u.pathname.startsWith("/gh/") &&
-                                         !u.pathname.startsWith("/npm/"));
-                                    if (wrongHost) {
-                                        return new URL(
-                                            u.pathname.replace(/^\\//, "") + u.search + u.hash,
-                                            repoBase
-                                        ).href;
-                                    }
-                                    return u.href;
-                                } catch (e) {
-                                    return url;
-                                }
-                            }
-
-                            const origFetch = window.fetch;
-                            window.fetch = function(input, init) {
-                                if (typeof input === "string") input = fix(input);
-                                else if (input instanceof URL) input = fix(input.href);
-                                else if (input instanceof Request) input = new Request(fix(input.url), input);
-                                return origFetch.call(this, input, init);
-                            };
-
-                            const origOpen = XMLHttpRequest.prototype.open;
-                            XMLHttpRequest.prototype.open = function(method, url, ...rest) {
-                                return origOpen.call(this, method, fix(String(url)), ...rest);
-                            };
-
-                            if (window.Worker) {
-                                const OrigWorker = window.Worker;
-                                window.Worker = class extends OrigWorker {
-                                    constructor(url, opts) { super(fix(String(url)), opts); }
-                                };
-                            }
-
-                            const OrigAudio = window.Audio;
-                            window.Audio = function(src) {
-                                return new OrigAudio(src ? fix(src) : src);
-                            };
-
-                            [
-                                [HTMLImageElement, "src"],
-                                [HTMLScriptElement, "src"],
-                                [HTMLMediaElement, "src"],
-                                [HTMLSourceElement, "src"],
-                                [HTMLLinkElement, "href"],
-                                [HTMLIFrameElement, "src"]
-                            ].forEach(([cls, prop]) => {
-                                const desc = Object.getOwnPropertyDescriptor(cls.prototype, prop);
-                                if (!desc || !desc.set) return;
-                                Object.defineProperty(cls.prototype, prop, {
-                                    get: desc.get,
-                                    set(v) { desc.set.call(this, fix(String(v))); },
-                                    configurable: true
-                                });
-                            });
-
-                            const origSetAttr = Element.prototype.setAttribute;
-                            Element.prototype.setAttribute = function(name, value) {
-                                if (/^(src|href|data-src|poster)$/i.test(name)) value = fix(String(value));
-                                return origSetAttr.call(this, name, value);
-                            };
-                        })();
-                    <\/script>
-                `;
+                const baseTag = '<base href="' + dirBaseUrl + '">';
 
                 if (/<head[^>]*>/i.test(html)) {
-                    html = html.replace(
-                        /<head[^>]*>/i,
-                        "$&" + baseTagAndScripts
-                    );
+                    html = html.replace(/<head[^>]*>/i, "$&" + baseTag);
                 } else if (/<html[^>]*>/i.test(html)) {
-                    html = html.replace(
-                        /<html[^>]*>/i,
-                        "$&<head>" + baseTagAndScripts + "</head>"
-                    );
+                    html = html.replace(/<html[^>]*>/i, "$&<head>" + baseTag + "</head>");
                 } else {
-                    html = baseTagAndScripts + html;
+                    html = baseTag + html;
                 }
 
                 processedGameHTML = html;
@@ -251,49 +73,25 @@
                     URL.revokeObjectURL(currentBlobUrl);
                 }
 
-                const blob = new Blob(
-                    [html],
-                    { type: "text/html" }
-                );
-
-                currentBlobUrl = URL.createObjectURL(blob);
+                currentBlobUrl = URL.createObjectURL(new Blob([html], { type: "text/html" }));
                 gamePlayer.src = currentBlobUrl;
-
             } catch (error) {
-                gamePlayer.srcdoc = `
-                    <!DOCTYPE html>
-                    <html>
-                        <body style="
-                            margin:0;
-                            background:#111;
-                            color:white;
-                            font-family:Arial, sans-serif;
-                            display:flex;
-                            align-items:center;
-                            justify-content:center;
-                            height:100vh;
-                        ">
-                            <h2>Failed to load game from repository</h2>
-                        </body>
-                    </html>
-                `;
+                console.error("Game load failed:", error);
+                showError("Failed to load game");
             }
         }
 
         if (gameInput) {
-            loadGame(gameInput, repoInput);
+            loadGame(gameInput);
+        } else {
+            showError("No game selected");
         }
 
         function openInBlank() {
-            if (!processedGameHTML) {
-                return;
-            }
+            if (!processedGameHTML) return;
 
             const newWindow = window.open("about:blank", "_blank");
-
-            if (!newWindow) {
-                return;
-            }
+            if (!newWindow) return;
 
             newWindow.document.open();
             newWindow.document.write(processedGameHTML);
@@ -302,7 +100,7 @@
         }
 
         function fullscreenGame() {
-            if (!document.fullscreenElement) {
+            if (!document.fullscreenElement && !document.webkitFullscreenElement) {
                 if (gameContainer.requestFullscreen) {
                     gameContainer.requestFullscreen();
                 } else if (gameContainer.webkitRequestFullscreen) {
