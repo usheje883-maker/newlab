@@ -7,13 +7,6 @@
     "genre": "games"
   },
   {
-    "name": "Angry Birds Online",
-    "image": "Images/gs.png",
-    "link": "Games/Singlefile/angrybirdsonline.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
     "name": "Bloxorz",
     "image": "Images/bloxorz.png",
     "link": "Games/Singlefile/bioxorz.html",
@@ -171,13 +164,6 @@
     "name": "Leaf Blower",
     "image": "Images/leafblower.png",
     "link": "Games/Singlefile/leafblower.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Little Alchemy 2",
-    "image": "Images/littleclah2",
-    "link": "Games/Singlefile/littlealchemy2.html",
     "repo": "",
     "genre": "games"
   },
