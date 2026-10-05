@@ -256,13 +256,20 @@
     "image": "Images/ultrakill.png",
     "link": "Games/Singlefile/ultrakill.html",
     "repo": "",
-    "genre": "games"
+    "genre": "port"
   },
   {
     "name": "Zombie Rush",
-    "image": "Images/gs.png",
+    "image": "Images/zombierush.png",
     "link": "Games/Singlefile/zombierush.html",
     "repo": "",
     "genre": "games"
+  },
+  {
+    "name": "Hill Climb Racer",
+    "image": "Images/hcr.png",
+    "link": "Games/Singlefile/hcr.html",
+    "repo": "",
+    "genre": "port"
   }
 ]
