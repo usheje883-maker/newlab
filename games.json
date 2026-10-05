@@ -29,7 +29,7 @@
   },
   {
     "name": "Bowmaster",
-    "image": "Images/boxmasters.png",
+    "image": "Images/bowmasters.png",
     "link": "Games/Singlefile/bowmaster.html",
     "repo": "",
     "genre": "games"
@@ -148,7 +148,7 @@
   },
   {
     "name": "Hypper Sandbox",
-    "image": "Images/hypersandbox.png",
+    "image": "Images/hyppersandbox.png",
     "link": "Games/Singlefile/hyppersandbox.html",
     "repo": "",
     "genre": "games"
@@ -176,7 +176,7 @@
   },
   {
     "name": "Little Alchemy 2",
-    "image": "Images/littlealch2.png",
+    "image": "Images/littleclah2",
     "link": "Games/Singlefile/littlealchemy2.html",
     "repo": "",
     "genre": "games"
@@ -197,7 +197,7 @@
   },
   {
     "name": "Temple Run 2",
-    "image": "Images/templerun2.png",
+    "image": "Images/templerum2.png",
     "link": "Games/Singlefile/templerun2.html",
     "repo": "",
     "genre": "games"
