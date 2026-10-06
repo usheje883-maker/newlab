@@ -240,7 +240,7 @@
   {
     "name": "ULTRAKILL",
     "image": "Images/ultrakill.png",
-    "link": "Games/Singlefile/ultrakill.html",
+    "link": "Games/Multifile/Ultrakill-Prelude/index.html",
     "repo": "",
     "genre": "port"
   },
