@@ -16,7 +16,7 @@
   {
     "name": "Bounce Masters",
     "image": "Images/bouncemasters.png",
-    "link": "Games/Singlefile/bouncemasters.html",
+    "link": "Games/Multifile/BounceMasters/index.html",
     "repo": "",
     "genre": "games"
   },
