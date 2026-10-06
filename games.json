@@ -254,7 +254,7 @@
   {
     "name": "Hill Climb Racer",
     "image": "Images/hcr.png",
-    "link": "Games/Singlefile/HillClimbRacing",
+    "link": "Games/Singlefile/hcr.html",
     "repo": "",
     "genre": "port"
   }
