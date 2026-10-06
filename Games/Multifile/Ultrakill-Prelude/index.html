@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Unity WebGL Player | ULTRAKILL WEB PORT</title>
+  </head>
+  <body style="text-align: center; padding: 0; border: 0; margin: 0;">
+    <canvas id="unity-canvas" width=1280 height=720 tabindex="-1" style="width: 1280px; height: 720px; background: #231F20"></canvas>
+    <script src="Build/build.loader.js"></script>
+    <script>
+      if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
+        var meta = document.createElement('meta');
+        meta.name = 'viewport';
+        meta.content = 'width=device-width, height=device-height, initial-scale=1.0, user-scalable=no, shrink-to-fit=yes';
+        document.getElementsByTagName('head')[0].appendChild(meta);
+
+        var canvas = document.querySelector("#unity-canvas");
+        canvas.style.width = "100%";
+        canvas.style.height = "100%";
+        canvas.style.position = "fixed";
+
+        document.body.style.textAlign = "left";
+      }
+
+      async function fetchJoined(baseUrl) {
+        const buffers = [];
+        for (let i = 1; ; i++) {
+          const url = baseUrl + ".part" + String(i).padStart(3, "0");
+          const res = await fetch(url);
+          if (!res.ok) break;
+          buffers.push(await res.arrayBuffer());
+        }
+        if (!buffers.length) throw new Error("No parts found for " + baseUrl);
+        return URL.createObjectURL(new Blob(buffers));
+      }
+
+      (async () => {
+        const dataUrl = await fetchJoined("Build/build.data.unityweb");
+
+        createUnityInstance(document.querySelector("#unity-canvas"), {
+          dataUrl: dataUrl,
+          frameworkUrl: "Build/build.framework.js.unityweb",
+          codeUrl: "Build/build.wasm.unityweb",
+          streamingAssetsUrl: "StreamingAssets",
+          companyName: "Hakita and Cake Logic",
+          productName: "ULTRAKILL WEB PORT",
+          productVersion: "1.4",
+          decompressionFallback: true
+        });
+      })();
+    </script>
+  </body>
+</html>
