@@ -22,95 +22,41 @@
     </div>
 
     <script>
-        const urlParams = new URLSearchParams(window.location.search);
-        const rawSearch = window.location.search.substring(1);
-        let gameInput = urlParams.get("game");
+        const fullQuery = window.location.search.substring(1);
+        const pageIframe = document.querySelector('.gameplayer');
+        const gameUrl = fullQuery ? decodeURIComponent(fullQuery) : '';
 
-        if (!gameInput && rawSearch && !rawSearch.includes("=")) {
-            gameInput = decodeURIComponent(rawSearch);
-        }
-
-        const gamePlayer = document.querySelector(".gameplayer");
-        const gameContainer = document.querySelector(".gamecontainer");
-
-        let processedGameHTML = "";
-        let currentBlobUrl = null;
-
-        function showError(message) {
-            gamePlayer.srcdoc =
-                '<!DOCTYPE html><html><body style="margin:0;background:#111;color:#fff;' +
-                'font-family:Arial,sans-serif;display:flex;align-items:center;' +
-                'justify-content:center;height:100vh;text-align:center;">' +
-                "<h2>" + message + "</h2></body></html>";
-        }
-
-        async function loadGame(gameStr) {
-            try {
-                const fullUrl = new URL(gameStr, window.location.href).href;
-                const dirBaseUrl = fullUrl.substring(0, fullUrl.lastIndexOf("/") + 1);
-
-                const response = await fetch(fullUrl);
-                if (!response.ok) {
-                    throw new Error("HTTP " + response.status);
-                }
-
-                let html = await response.text();
-
-                const baseTag = '<base href="' + dirBaseUrl + '">';
-
-                if (/<head[^>]*>/i.test(html)) {
-                    html = html.replace(/<head[^>]*>/i, "$&" + baseTag);
-                } else if (/<html[^>]*>/i.test(html)) {
-                    html = html.replace(/<html[^>]*>/i, "$&<head>" + baseTag + "</head>");
-                } else {
-                    html = baseTag + html;
-                }
-
-                processedGameHTML = html;
-
-                if (currentBlobUrl) {
-                    URL.revokeObjectURL(currentBlobUrl);
-                }
-
-                currentBlobUrl = URL.createObjectURL(new Blob([html], { type: "text/html" }));
-                gamePlayer.src = currentBlobUrl;
-            } catch (error) {
-                console.error("Game load failed:", error);
-                showError("Failed to load game");
-            }
-        }
-
-        if (gameInput) {
-            loadGame(gameInput);
-        } else {
-            showError("No game selected");
+        if (gameUrl) {
+            pageIframe.src = gameUrl;
         }
 
         function openInBlank() {
-            if (!processedGameHTML) return;
+            if (!gameUrl) {
+                alert("No game URL provided.");
+                return;
+            }
 
-            const newWindow = window.open("about:blank", "_blank");
-            if (!newWindow) return;
+            const newWindow = window.open('about:blank', '_blank');
 
-            newWindow.document.open();
-            newWindow.document.write(processedGameHTML);
-            newWindow.document.close();
-            newWindow.focus();
-        }
+            if (newWindow) {
+                const popupIframe = newWindow.document.createElement('iframe');
+                popupIframe.src = gameUrl;
+                popupIframe.allowFullscreen = true;
+                popupIframe.style.position = 'fixed';
+                popupIframe.style.top = '0';
+                popupIframe.style.left = '0';
+                popupIframe.style.width = '100vw';
+                popupIframe.style.height = '100vh';
+                popupIframe.style.border = 'none';
+                popupIframe.style.margin = '0';
+                popupIframe.style.padding = '0';
+                popupIframe.style.overflow = 'hidden';
 
-        function fullscreenGame() {
-            if (!document.fullscreenElement && !document.webkitFullscreenElement) {
-                if (gameContainer.requestFullscreen) {
-                    gameContainer.requestFullscreen();
-                } else if (gameContainer.webkitRequestFullscreen) {
-                    gameContainer.webkitRequestFullscreen();
-                }
+                newWindow.document.title = 'Game Player';
+                newWindow.document.body.style.margin = '0';
+                newWindow.document.body.appendChild(popupIframe);
             } else {
-                if (document.exitFullscreen) {
-                    document.exitFullscreen();
-                } else if (document.webkitExitFullscreen) {
-                    document.webkitExitFullscreen();
-                }
+                alert("Please allow pop-ups for this site.");
             }
         }
     </script>
