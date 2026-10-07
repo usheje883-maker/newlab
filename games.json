@@ -189,13 +189,6 @@
     "genre": "games"
   },
   {
-    "name": "Territorial.io",
-    "image": "Images/territorial.png",
-    "link": "Games/Singlefile/territorialio.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
     "name": "There Is No File",
     "image": "Images/thereisnogame.png",
     "link": "Games/Singlefile/thereisnofile.html",
