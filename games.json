@@ -11,7 +11,7 @@
     "image": "Images/bloxorz.png",
     "link": "Games/Multifile/Bloxorz/index.html",
     "repo": "",
-    "genre": "games"
+    "genre": "flash"
   },
   {
     "name": "Bounce Masters",
@@ -73,13 +73,6 @@
     "name": "Drive Mad",
     "image": "Images/drivemad.png",
     "link": "Games/Singlefile/drivemad.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Dungeons & Degenerate Gamblers",
-    "image": "Images/dadg.png",
-    "link": "Games/Singlefile/dungeonsanddegeneretegambler.html",
     "repo": "",
     "genre": "games"
   },
@@ -189,7 +182,7 @@
     "genre": "games"
   },
   {
-    "name": "There Is No File",
+    "name": "There Is No Game",
     "image": "Images/thereisnogame.png",
     "link": "Games/Singlefile/thereisnofile.html",
     "repo": "",
