@@ -1,0 +1,5 @@
+toml[[headers]]
+  for = "/*.unityweb"
+  [headers.values]
+    Content-Encoding = "br"
+    Content-Type = "application/octet-stream"
