@@ -1,54 +1,162 @@
 <!DOCTYPE html>
 <html lang="en-us">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>Unity WebGL Player | ULTRAKILL WEB PORT</title>
-  </head>
-  <body style="text-align: center; padding: 0; border: 0; margin: 0;">
-    <canvas id="unity-canvas" width=1280 height=720 tabindex="-1" style="width: 1280px; height: 720px; background: #231F20"></canvas>
-    <script src="Build/build.loader.js"></script>
-    <script>
-      if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
-        var meta = document.createElement('meta');
-        meta.name = 'viewport';
-        meta.content = 'width=device-width, height=device-height, initial-scale=1.0, user-scalable=no, shrink-to-fit=yes';
-        document.getElementsByTagName('head')[0].appendChild(meta);
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Offline Parts Loader</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #14161a;
+    color: #e8eaed;
+    font: 15px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif;
+  }
+  .panel { width: min(560px, 92vw); text-align: center; }
+  h1 { margin: 0 0 4px; font-size: 20px; font-weight: 600; }
+  .hint { margin: 0 0 24px; color: #9aa0a6; font-size: 13px; }
+  .bar { position: relative; height: 10px; overflow: hidden; border-radius: 6px; background: #262a30; }
+  .fill { width: 0; height: 100%; border-radius: 6px; background: #4c8dff; transition: width 0.15s linear; }
+  .stats { display: flex; justify-content: space-between; margin-top: 10px; color: #9aa0a6; font-size: 13px; font-variant-numeric: tabular-nums; }
+  .file { margin-top: 16px; color: #c6cbd2; font-size: 13px; word-break: break-all; }
+  .error { display: none; margin-top: 18px; padding: 14px; border: 1px solid #5c2b2b; border-radius: 8px; background: #241a1a; color: #ffb4b4; font-size: 13px; text-align: left; white-space: pre-wrap; }
+  .action { display: none; margin-top: 18px; }
+  .fallback { display: none; margin-top: 12px; color: #9aa0a6; font-size: 13px; }
+  button { padding: 10px 18px; border: 0; border-radius: 8px; background: #4c8dff; color: #fff; font: inherit; cursor: pointer; }
+  button:hover { background: #3f7ef0; }
+</style>
+</head>
+<body>
+<main class="panel">
+  <h1>Loading</h1>
+  <p class="hint">Assembling offline.html from its parts</p>
+  <div class="bar"><div class="fill" id="fill"></div></div>
+  <div class="stats"><span id="bytes">0 B / 0 B</span><span id="percent">0%</span></div>
+  <div class="file" id="file"></div>
+  <div class="error" id="error"></div>
+  <div class="action" id="action">
+    <button id="pick" type="button">Select the part files manually</button>
+    <div class="fallback" id="fallback">Select all four .part files together; they are merged in filename order.</div>
+  </div>
+  <input id="input" type="file" multiple hidden>
+</main>
+<script>
+  const names = ["offline.html.part001", "offline.html.part002", "offline.html.part003", "offline.html.part004"];
+  const fill = document.getElementById("fill");
+  const bytes = document.getElementById("bytes");
+  const percent = document.getElementById("percent");
+  const fileLabel = document.getElementById("file");
+  const errorBox = document.getElementById("error");
+  const action = document.getElementById("action");
+  const pick = document.getElementById("pick");
+  const input = document.getElementById("input");
+  const progress = names.map(() => 0);
+  const sizes = names.map(() => 0);
 
-        var canvas = document.querySelector("#unity-canvas");
-        canvas.style.width = "100%";
-        canvas.style.height = "100%";
-        canvas.style.position = "fixed";
+  function formatBytes(n) {
+    if (n < 1024) return n + " B";
+    if (n < 1048576) return (n / 1024).toFixed(1) + " KB";
+    if (n < 1073741824) return (n / 1048576).toFixed(1) + " MB";
+    return (n / 1073741824).toFixed(2) + " GB";
+  }
 
-        document.body.style.textAlign = "left";
-      }
+  function report(label) {
+    let loaded = 0;
+    let total = 0;
+    for (let i = 0; i < progress.length; i++) {
+      loaded += progress[i];
+      total += Math.max(sizes[i], progress[i]);
+    }
+    const ratio = total ? Math.min(1, loaded / total) : 0;
+    fill.style.width = ratio * 100 + "%";
+    bytes.textContent = formatBytes(loaded) + " / " + formatBytes(total);
+    percent.textContent = Math.floor(ratio * 100) + "%";
+    if (label) fileLabel.textContent = label;
+  }
 
-      async function fetchJoined(baseUrl) {
-        const buffers = [];
-        for (let i = 1; ; i++) {
-          const url = baseUrl + ".part" + String(i).padStart(3, "0");
-          const res = await fetch(url);
-          if (!res.ok) break;
-          buffers.push(await res.arrayBuffer());
-        }
-        if (!buffers.length) throw new Error("No parts found for " + baseUrl);
-        return URL.createObjectURL(new Blob(buffers));
-      }
+  async function readChunks(source, index, label) {
+    const reader = source.getReader();
+    const decoder = new TextDecoder();
+    const chunks = [];
+    for (;;) {
+      const step = await reader.read();
+      if (step.done) break;
+      progress[index] += step.value.byteLength;
+      chunks.push(decoder.decode(step.value, { stream: true }));
+      report(label);
+    }
+    chunks.push(decoder.decode());
+    return chunks;
+  }
 
-      (async () => {
-        const dataUrl = await fetchJoined("Build/build.data.unityweb");
+  async function readBuffer(blob, index, label) {
+    const buffer = await blob.arrayBuffer();
+    progress[index] = buffer.byteLength;
+    report(label);
+    return [new TextDecoder().decode(buffer)];
+  }
 
-        createUnityInstance(document.querySelector("#unity-canvas"), {
-          dataUrl: dataUrl,
-          frameworkUrl: "Build/build.framework.js.unityweb",
-          codeUrl: "Build/build.wasm.unityweb",
-          streamingAssetsUrl: "StreamingAssets",
-          companyName: "Hakita and Cake Logic",
-          productName: "ULTRAKILL WEB PORT",
-          productVersion: "1.4",
-          decompressionFallback: true
-        });
-      })();
-    </script>
-  </body>
+  async function readPart(blob, index, label) {
+    if (blob.stream) return readChunks(blob.stream(), index, label);
+    return readBuffer(blob, index, label);
+  }
+
+  function launch(parts) {
+    const html = parts.flat().join("");
+    document.open("text/html");
+    document.write(html);
+    document.close();
+  }
+
+  function fail(message) {
+    errorBox.textContent = message;
+    errorBox.style.display = "block";
+    action.style.display = "block";
+  }
+
+  function resetProgress() {
+    for (let i = 0; i < progress.length; i++) {
+      progress[i] = 0;
+      sizes[i] = 0;
+    }
+    report();
+  }
+
+  async function load() {
+    const jobs = names.map(async (name, index) => {
+      const response = await fetch(name);
+      if (!response.ok) throw new Error(name + " - HTTP " + response.status);
+      sizes[index] = Number(response.headers.get("content-length")) || 0;
+      if (response.body) return readChunks(response.body, index, name);
+      return readBuffer(await response.blob(), index, name);
+    });
+    launch(await Promise.all(jobs));
+  }
+
+  async function loadPicked(event) {
+    const files = Array.from(event.target.files).sort((a, b) => a.name.localeCompare(b.name));
+    if (!files.length) return;
+    errorBox.style.display = "none";
+    action.style.display = "none";
+    resetProgress();
+    const jobs = files.map((file, index) => {
+      sizes[index] = file.size;
+      return readPart(file, index, file.name);
+    });
+    launch(await Promise.all(jobs));
+  }
+
+  pick.addEventListener("click", () => input.click());
+  input.addEventListener("change", loadPicked);
+  report("Fetching part files…");
+  load().catch((error) => {
+    const detail = error && error.message ? error.message : String(error);
+    fail("Could not fetch the part files (" + detail + ").\n\nEither serve this folder over HTTP:\n  python -m http.server\nthen open http://localhost:8000/\n\nOr use the button below to pick the files directly.");
+  });
+</script>
+</body>
 </html>
