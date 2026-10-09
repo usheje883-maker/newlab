@@ -257,5 +257,12 @@
     "link": "Games/Singlefile/rimworld.html",
     "repo": "",
     "genre": "port"
+  },
+  {
+    "name": "Aya Studio",
+    "image": "Images/Studio.png",
+    "link": "Tools/Aya_Studio",
+    "repo": "",
+    "genre": "tools"
   }
 ]
