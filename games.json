@@ -250,5 +250,12 @@
     "link": "Games/Multifile/DriveOnline",
     "repo": "",
     "genre": "games"
+  },
+  {
+    "name": "Rim World",
+    "image": "Images/rim.png",
+    "link": "Games/Singlefile/rimworld.html",
+    "repo": "",
+    "genre": "port"
   }
 ]
