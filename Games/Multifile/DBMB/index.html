@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Don't Bite Me Bro!</title>
+    <link rel="shortcut icon" href="TemplateData/favicon.png">
+    <link rel="stylesheet" href="TemplateData/style.css">
+    <script src="TemplateData/UnityProgress.js"></script>
+    <script src="Build/UnityLoader.js?v=4"></script>
+    <script>
+      var gameInstance = UnityLoader.instantiate("gameContainer", "Build/Bite me bro web.json?v=6", {onProgress: UnityProgress});
+      alert("Port By Noob_God2729");
+      function Resize() {
+        if (document.fullscreenElement || document.webkitFullscreenElement) return;
+        var container = document.getElementById('gameContainer');
+        if (!gameInstance.Module || !gameInstance.Module.setCanvasSize) return;
+        gameInstance.Module.setCanvasSize(container.clientWidth, container.clientHeight);
+      }
+
+      function FullscreenChanged() {
+        if (!document.fullscreenElement && !document.webkitFullscreenElement) Resize();
+      }
+
+      gameInstance.Module.postRun.push(Resize);
+      window.addEventListener('resize', Resize);
+      document.addEventListener('fullscreenchange', FullscreenChanged);
+      document.addEventListener('webkitfullscreenchange', FullscreenChanged);
+    </script>
+  </head>
+  <body>
+    <div class="webgl-content">
+      <div id="gameContainer"></div>
+    </div>
+  </body>
+</html>
