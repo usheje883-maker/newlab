@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Don't Bite Me Bro!</title>
+    <link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/usheje883-maker/Better-Dont-Bite-Me-Bro-Webport@main/TemplateData/favicon.png">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/usheje883-maker/Better-Dont-Bite-Me-Bro-Webport@main/TemplateData/style.css">
+    <script src="https://cdn.jsdelivr.net/gh/usheje883-maker/Better-Dont-Bite-Me-Bro-Webport@main/TemplateData/UnityProgress.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/usheje883-maker/Better-Dont-Bite-Me-Bro-Webport@main/Build/UnityLoader.js?v=4"></script>
+    <style>
+        #loadingMessage {
+            position: fixed;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #171717;
+            color: white;
+            font: 18px Arial, sans-serif;
+            z-index: 9999;
+        }
+    </style>
+</head>
+<body>
+    <div id="loadingMessage">Preparing game files...</div>
+    <div class="webgl-content">
+        <div id="gameContainer"></div>
+    </div>
+
+    <script>
+        let gameInstance;
+
+        async function loadParts(basePath, count) {
+            const parts = [];
+            let totalSize = 0;
+
+            for (let i = 0; i < count; i++) {
+                const suffix = String(i).padStart(3, "0");
+                const url = basePath + ".part" + suffix;
+
+                const response = await fetch(url);
+
+                if (!response.ok) {
+                    throw new Error("Could not load " + url);
+                }
+
+                const data = await response.arrayBuffer();
+                parts.push(data);
+                totalSize += data.byteLength;
+            }
+
+            const combined = new Uint8Array(totalSize);
+            let offset = 0;
+
+            for (const part of parts) {
+                combined.set(new Uint8Array(part), offset);
+                offset += part.byteLength;
+            }
+
+            return URL.createObjectURL(
+                new Blob([combined], {
+                    type: "application/octet-stream"
+                })
+            );
+        }
+
+        async function StartGame() {
+            try {
+                const buildPath = "https://cdn.jsdelivr.net/gh/usheje883-maker/Better-Dont-Bite-Me-Bro-Webport@main/Build/";
+
+                const asmCode = await loadParts(
+                    buildPath + "Bite_me_bro_web.asm.code.unityweb",
+                    3
+                );
+
+                const dataFile = await loadParts(
+                    buildPath + "Bite_me_bro_web.data.unityweb",
+                    4
+                );
+
+                const wasmCode = await loadParts(
+                    buildPath + "Bite_me_bro_web.wasm.code.unityweb",
+                    2
+                );
+
+                const jsonResponse = await fetch(
+                    buildPath + "Bite_me_bro_web.json?v=6"
+                );
+
+                if (!jsonResponse.ok) {
+                    throw new Error("Could not load the Unity JSON file.");
+                }
+
+                const config = await jsonResponse.json();
+
+                config.dataUrl = dataFile;
+                config.asmCodeUrl = asmCode;
+                config.wasmCodeUrl = wasmCode;
+                config.wasmFrameworkUrl = new URL(buildPath + "Bite_me_bro_web.wasm.framework.unityweb?v=2", window.location.href).href;
+                config.asmMemoryUrl = new URL(buildPath + "Bite_me_bro_web.asm.memory.unityweb", window.location.href).href;
+                config.asmFrameworkUrl = new URL(buildPath + "Bite_me_bro_web.asm.framework.unityweb", window.location.href).href;
+
+                const configBlob = URL.createObjectURL(
+                    new Blob([JSON.stringify(config)], {
+                        type: "application/json"
+                    })
+                );
+
+                document.getElementById("loadingMessage").remove();
+
+                gameInstance = UnityLoader.instantiate(
+                    "gameContainer",
+                    configBlob,
+                    {
+                        onProgress: UnityProgress
+                    }
+                );
+
+                try { alert("Port By Noob_God2729"); } catch (e) {}
+
+                function Resize() {
+                    if (
+                        document.fullscreenElement ||
+                        document.webkitFullscreenElement
+                    ) return;
+
+                    const container = document.getElementById("gameContainer");
+
+                    if (
+                        gameInstance &&
+                        gameInstance.Module &&
+                        gameInstance.Module.setCanvasSize
+                    ) {
+                        gameInstance.Module.setCanvasSize(
+                            container.clientWidth,
+                            container.clientHeight
+                        );
+                    }
+                }
+
+                function FullscreenChanged() {
+                    if (
+                        !document.fullscreenElement &&
+                        !document.webkitFullscreenElement
+                    ) {
+                        Resize();
+                    }
+                }
+
+                window.addEventListener("resize", Resize);
+                document.addEventListener("fullscreenchange", FullscreenChanged);
+                document.addEventListener("webkitfullscreenchange", FullscreenChanged);
+
+            } catch (error) {
+                const message = document.getElementById("loadingMessage");
+                if (message) {
+                    message.style.display = "flex";
+                    message.textContent = "Game loading failed: " + error.message;
+                }
+                console.error(error);
+            }
+        }
+
+        StartGame();
+    </script>
+</body>
+</html>
