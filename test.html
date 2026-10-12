@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Games</title>
+    <link rel="stylesheet" href="oct.css">
+</head>
+<body>
+    <div class="sidebar">
+        <button class="button active" data-category="games">All Games</button>
+        <button class="button" data-category="tools">Tools</button>
+        <button class="button" data-category="port">Ports</button>
+        <button class="button" data-category="flash">Flash</button>
+        <button class="button" data-category="roms">Roms</button>
+        <button class="button" data-category="fnf">FnF</button>
+    </div>
+
+    <div class="games">
+        <div class="gameentry">
+            <img src="https://media.tenor.com/WtYEe3sIFIAAAAAM/boomer-sooner.gif" alt="Template">
+            <h1>Template</h1>
+        </div>
+    </div>
+
+    <script>
+        const GAME_JSON_URL = "https://raw.githubusercontent.com/usheje883-maker/newlab/main/test.json";
+
+        let allGames = [];
+        let currentCategory = "games";
+
+        function renderGames(games) {
+            const container = document.querySelector(".games");
+            container.replaceChildren();
+
+            if (games.length === 0) {
+                const message = document.createElement("p");
+                message.textContent = "No items found.";
+                container.appendChild(message);
+                return;
+            }
+
+            for (const game of games) {
+                const name = game.name || "Unknown Game";
+                const image = game.image || "";
+                const link = game.link || "";
+
+                const entry = document.createElement("div");
+                entry.className = "gameentry";
+
+                if (image) {
+                    const gameImage = document.createElement("img");
+                    gameImage.src = image;
+                    gameImage.alt = name;
+                    entry.appendChild(gameImage);
+                }
+
+                const gameName = document.createElement("h1");
+                gameName.textContent = name;
+                entry.appendChild(gameName);
+
+                if (link) {
+                    entry.addEventListener("click", function () {
+                        window.location.href = `iframe.html?${encodeURIComponent(link)}`;
+                    });
+                }
+
+                container.appendChild(entry);
+            }
+        }
+
+        function applyCategory() {
+            const filtered = allGames.filter(game =>
+                game.genre && game.genre.toLowerCase() === currentCategory
+            );
+            renderGames(filtered);
+        }
+
+        function setCategory(category, button) {
+            currentCategory = category;
+
+            document.querySelectorAll(".button").forEach(btn => {
+                btn.classList.remove("active");
+            });
+
+            button.classList.add("active");
+            applyCategory();
+        }
+
+        async function loadGames() {
+            try {
+                const response = await fetch(GAME_JSON_URL);
+
+                if (!response.ok) {
+                    throw new Error(`Failed to fetch games.json: ${response.status}`);
+                }
+
+                allGames = await response.json();
+                applyCategory();
+            } catch (error) {
+                console.error("Error loading games:", error);
+                const container = document.querySelector(".games");
+                container.replaceChildren();
+                const message = document.createElement("p");
+                message.textContent = "Failed to load games.";
+                container.appendChild(message);
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+            document.querySelectorAll(".button").forEach(button => {
+                button.addEventListener("click", function () {
+                    setCategory(button.dataset.category, button);
+                });
+            });
+
+            loadGames();
+        });
+    </script>
+</body>
+</html>
