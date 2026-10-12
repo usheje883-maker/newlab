@@ -102,6 +102,30 @@
         color: #59616c;
         font-size: 13px;
         line-height: 20px;
+        white-space: pre-line;
+      }
+
+      #qtstatus.qt-status-error {
+        color: #8c2f2f;
+        text-align: left;
+      }
+
+      #qtstatus .qt-status-heading {
+        display: block;
+        margin-bottom: 6px;
+        color: #20242a;
+        font-weight: 700;
+      }
+
+      #qtstatus .qt-status-detail {
+        display: block;
+      }
+
+      #qtstatus .qt-status-hint {
+        display: block;
+        margin-top: 6px;
+        padding-left: 18px;
+        text-indent: -18px;
       }
 
       #qtprogress {
@@ -132,6 +156,74 @@
         background: #2878c8;
       }
     </style>
+    <!-- Static hosts such as GitHub Pages cannot send COOP/COEP headers, and the threaded
+         wasm build needs SharedArrayBuffer. coi-serviceworker.js supplies those headers
+         from a service worker, but a worker only affects the next navigation of the page,
+         so register it here, disable its own page-side logic, and reload. Hosts that
+         already send COOP/COEP never register it. A page that cannot become cross-origin
+         isolated at all (plain http on a LAN address, no service workers, headers the
+         worker cannot add) must not start the runtime: every module worker load would
+         throw "SharedArrayBuffer transfer requires self.crossOriginIsolated", so the boot
+         is refused with an explanation instead. -->
+    <script>
+        window.coi = { shouldRegister: () => false, quiet: true };
+        window.ayaStudioCoiReloadKey = 'aya-studio-coop-coep-reload';
+        window.ayaStudioSharedMemoryPending = false;
+        window.ayaStudioSharedMemoryProblem = '';
+
+        // A crossOriginIsolated of undefined means the browser is too old to report it, so
+        // fall back to whether shared memory exists at all before declaring the build dead.
+        const ayaStudioCrossOriginIsolated = window.crossOriginIsolated === true;
+        const ayaStudioSharedArrayBufferPresent = typeof SharedArrayBuffer !== 'undefined';
+        window.ayaStudioSharedMemoryUsable = ayaStudioCrossOriginIsolated ||
+            (window.crossOriginIsolated === undefined && ayaStudioSharedArrayBufferPresent);
+        const ayaStudioSecureContext = window.isSecureContext === true;
+        const ayaStudioServiceWorkerAvailable = 'serviceWorker' in navigator;
+        const ayaStudioCoiReloadAttemptLimit = 2;
+
+        const readCoiReloadAttempts = () => {
+            try {
+                return Number.parseInt(sessionStorage.getItem(window.ayaStudioCoiReloadKey) || '0', 10) || 0;
+            } catch (error) {
+                return 0;
+            }
+        };
+
+        const writeCoiReloadAttempts = attempts => {
+            try {
+                sessionStorage.setItem(window.ayaStudioCoiReloadKey, String(attempts));
+            } catch (error) {
+            }
+        };
+
+        if (window.ayaStudioSharedMemoryUsable) {
+            writeCoiReloadAttempts(0);
+        } else if (!ayaStudioSecureContext) {
+            window.ayaStudioSharedMemoryProblem = 'insecure-context';
+        } else if (!ayaStudioServiceWorkerAvailable) {
+            window.ayaStudioSharedMemoryProblem = 'no-service-worker';
+        } else if (readCoiReloadAttempts() >= ayaStudioCoiReloadAttemptLimit) {
+            window.ayaStudioSharedMemoryProblem = 'service-worker-reload';
+        } else {
+            window.ayaStudioSharedMemoryPending = true;
+            const reloadIfStillUnisolated = () => {
+                if (window.crossOriginIsolated === true || window.ayaStudioSharedMemoryProblem)
+                    return;
+                // Count the attempts so a reload that never isolates (a hard reload bypasses
+                // the service worker entirely) still ends in the explanation below.
+                writeCoiReloadAttempts(readCoiReloadAttempts() + 1);
+                window.location.reload();
+            };
+            navigator.serviceWorker.register('coi-serviceworker.js')
+                .then(() => navigator.serviceWorker.ready)
+                .then(reloadIfStillUnisolated)
+                .catch(error => {
+                    window.ayaStudioSharedMemoryPending = false;
+                    window.ayaStudioSharedMemoryProblem = 'service-worker-failed';
+                    console.warn('[Aya Studio] COOP/COEP service worker registration failed:', error);
+                });
+        }
+    </script>
   </head>
   <body onload="init()">
     <figure id="qtspinner">
@@ -1782,10 +1874,120 @@
                 }
             };
 
+            // The threaded wasm build cannot start in a page that is not cross-origin isolated:
+            // every module worker load throws "SharedArrayBuffer transfer requires
+            // self.crossOriginIsolated" and the engine never boots. Report the requirement, and
+            // how to satisfy it, instead of letting the runtime crash in a way that only the
+            // console explains.
+            const sharedMemoryHint = () => {
+                const problem = window.ayaStudioSharedMemoryProblem;
+                const serverHint = 'Otherwise serve the build from a host that sends ' +
+                    'Cross-Origin-Opener-Policy: same-origin and Cross-Origin-Embedder-Policy: ' +
+                    'require-corp on the document itself.';
+                const hints = [];
+
+                if (window.isSecureContext === false)
+                    hints.push('Serve the build over HTTPS or on localhost. A page served from a ' +
+                        'LAN address or a plain http:// URL cannot use WebAssembly threads, even ' +
+                        'when the server sends those headers.');
+
+                if (!('serviceWorker' in navigator))
+                    hints.push('This browser has no service worker support, so coi-serviceworker.js ' +
+                        'cannot add the headers. Use a browser with service workers, or a host that ' +
+                        'sends the headers itself.');
+                else if (problem === 'service-worker-failed' || problem === 'service-worker-reload')
+                    hints.push('The helper service worker coi-serviceworker.js did not supply the ' +
+                        'headers. Check that the file is deployed next to index.html and that ' +
+                        'service workers and site data are allowed for this site.');
+
+                if (problem === 'service-worker-reload')
+                    hints.push('The helper service worker only affects a normal navigation. If ' +
+                        'DevTools is open, turn off "Disable cache" and avoid hard reloading ' +
+                        '(Ctrl+Shift+R), which bypasses the service worker.');
+
+                if (!hints.length)
+                    hints.push('Open Aya Studio over HTTPS or on localhost.', serverHint);
+                else
+                    hints.push(serverHint);
+                return hints;
+            };
+
+            const showSharedMemoryUnavailable = reason => {
+                const explanation = reason === 'runtime'
+                    ? 'The WebAssembly engine could not start its worker threads because this page is ' +
+                      'not cross-origin isolated.'
+                    : 'The WebAssembly engine needs shared memory, which this page cannot get.';
+                console.error('[Aya Studio] Shared memory unavailable:', {
+                    reason,
+                    problem: window.ayaStudioSharedMemoryProblem,
+                    crossOriginIsolated: window.crossOriginIsolated,
+                    isSecureContext: window.isSecureContext,
+                    serviceWorker: 'serviceWorker' in navigator,
+                    sharedArrayBuffer: typeof SharedArrayBuffer,
+                    requiredHeaders: {
+                        'Cross-Origin-Opener-Policy': 'same-origin',
+                        'Cross-Origin-Embedder-Policy': 'require-corp'
+                    }
+                });
+
+                const heading = document.createElement('strong');
+                heading.className = 'qt-status-heading';
+                heading.textContent = 'Aya Studio needs cross-origin isolation';
+                const detail = document.createElement('span');
+                detail.className = 'qt-status-detail';
+                detail.textContent = `${explanation} Shared memory makes the engine run its worker ` +
+                    'threads; the browser blocks it unless the page is cross-origin isolated, which ' +
+                    'requires the Cross-Origin-Opener-Policy: same-origin and ' +
+                    'Cross-Origin-Embedder-Policy: require-corp response headers.';
+
+                status.textContent = '';
+                status.classList.add('qt-status-error');
+                status.append(heading, detail);
+                for (const hint of sharedMemoryHint()) {
+                    const line = document.createElement('span');
+                    line.className = 'qt-status-hint';
+                    line.textContent = `• ${hint}`;
+                    status.append(line);
+                }
+
+                progress.style.display = 'none';
+                showUi(spinner);
+            };
+
+            // A page that still slips past the check above (a WebView reporting isolation it
+            // cannot deliver, or an unexpected worker path) reports the same problem here.
+            window.addEventListener('unhandledrejection', event => {
+                const error = event.reason;
+                if (pageShuttingDown || window.crossOriginIsolated === true)
+                    return;
+                if (error?.name !== 'DataCloneError' ||
+                    !String(error.message || '').includes('SharedArrayBuffer'))
+                    return;
+                showSharedMemoryUnavailable('runtime');
+            });
+
             try {
                 showUi(spinner);
                 progress.style.display = 'block';
                 ayaStudioRenderDownloadProgress();
+
+                // Wait for the COOP/COEP service worker reload instead of downloading the
+                // whole runtime into a page that is about to be replaced.
+                if (!window.ayaStudioSharedMemoryUsable && window.ayaStudioSharedMemoryPending) {
+                    status.textContent = 'Enabling shared memory support...';
+                    await Promise.race([
+                        new Promise(resolve => navigator.serviceWorker.ready.then(resolve, resolve)),
+                        new Promise(resolve => setTimeout(resolve, 10000))
+                    ]);
+                    window.ayaStudioSharedMemoryPending = false;
+                    if (pageShuttingDown)
+                        return;
+                }
+
+                if (!window.ayaStudioSharedMemoryUsable) {
+                    showSharedMemoryUnavailable('preflight');
+                    return;
+                }
 
                 const navigationEntry = performance.getEntriesByType('navigation')[0];
                 if (navigationEntry?.type === 'reload') {
