@@ -183,11 +183,14 @@
 
         // The reload counter has to survive the reloads it schedules, so it lives in session
         // storage. Without usable storage there is no way to bound the reloads, and a browser
-        // that blocks site data for this origin normally blocks service workers with it.
+        // that blocks site data for this origin normally blocks service workers with it. The
+        // probe must never touch the counter key itself: writing the counter back and forth
+        // here would reset it on every load and reload forever.
+        const ayaStudioCoiStorageProbeKey = 'aya-studio-coop-coep-storage-probe';
         const ayaStudioCoiReloadStorage = (() => {
             try {
-                window.sessionStorage.setItem(window.ayaStudioCoiReloadKey, '0');
-                window.sessionStorage.removeItem(window.ayaStudioCoiReloadKey);
+                window.sessionStorage.setItem(ayaStudioCoiStorageProbeKey, '1');
+                window.sessionStorage.removeItem(ayaStudioCoiStorageProbeKey);
                 return window.sessionStorage;
             } catch (error) {
                 return null;
@@ -204,12 +207,16 @@
             }
         };
 
+        // Returns whether the attempt count really landed in storage: a silent no-op write
+        // would let every load believe it is the first one and reload without end.
         const writeCoiReloadAttempts = attempts => {
             if (!ayaStudioCoiReloadStorage)
-                return;
+                return false;
             try {
                 ayaStudioCoiReloadStorage.setItem(window.ayaStudioCoiReloadKey, String(attempts));
+                return ayaStudioCoiReloadStorage.getItem(window.ayaStudioCoiReloadKey) === String(attempts);
             } catch (error) {
+                return false;
             }
         };
 
@@ -232,9 +239,16 @@
                 if (window.crossOriginIsolated === true || window.ayaStudioSharedMemoryProblem)
                     return;
                 // Count the attempts so a reload that never isolates (a hard reload bypasses
-                // the service worker entirely) still ends in the explanation below.
-                window.ayaStudioCoiReloadAttempts = readCoiReloadAttempts() + 1;
-                writeCoiReloadAttempts(window.ayaStudioCoiReloadAttempts);
+                // the service worker entirely) still ends in the explanation below. Reload only
+                // once the new count is stored, otherwise this load and the next one would both
+                // think they are the first.
+                const nextAttempts = readCoiReloadAttempts() + 1;
+                if (!writeCoiReloadAttempts(nextAttempts)) {
+                    window.ayaStudioSharedMemoryPending = false;
+                    window.ayaStudioSharedMemoryProblem = 'blocked-storage';
+                    return;
+                }
+                window.ayaStudioCoiReloadAttempts = nextAttempts;
                 window.location.reload();
             };
             navigator.serviceWorker.register('coi-serviceworker.js')
