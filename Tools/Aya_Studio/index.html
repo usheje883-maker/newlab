@@ -7,7 +7,7 @@
     <meta name="color-scheme" content="light">
     
     <title>Aya Studio WASM</title>
-    <link rel="icon" type="image/png" href="/aya-studio.png"/>
+    <link rel="icon" type="image/png" href="aya-studio.png"/>
     <meta name="title" content="Aya Studio WASM" />
     <meta name="description" content="Work in progess port of Early 2016 Roblox Studio to web." />
     
@@ -136,7 +136,7 @@
   <body onload="init()">
     <figure id="qtspinner">
       <div class="qt-loader">
-        <img src="/aya-studio.png" width="150" height="150" alt="">
+        <img src="aya-studio.png" width="150" height="150" alt="">
         <strong>Qt for WebAssembly: Aya.Studio</strong>
         <progress id="qtprogress" aria-label="Application download progress"></progress>
         <div id="qtstatus" role="status" aria-live="polite">Preparing download...</div>
@@ -152,7 +152,9 @@
         const ayaStudioBuildId = '051b32b21267782322c512f8';
         window.ayaStudioBuildId = ayaStudioBuildId;
         const ayaStudioDataVersion = 'd21a64691936250e223dcee0';
-        const ayaStudioRuntimeDataUrl = new URL('Aya.Studio.data', window.location.origin).href;
+        // Resolve against the page itself so the build works when it is served from a
+        // subdirectory as well as from the domain root.
+        const ayaStudioRuntimeDataUrl = new URL('Aya.Studio.data', document.baseURI).href;
         const ayaStudioAddEventListener = EventTarget.prototype.addEventListener;
         EventTarget.prototype.addEventListener = function(type, listener, options) {
             if (type === 'wheel') {
