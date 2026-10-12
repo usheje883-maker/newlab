@@ -181,27 +181,49 @@
         const ayaStudioServiceWorkerAvailable = 'serviceWorker' in navigator;
         const ayaStudioCoiReloadAttemptLimit = 2;
 
-        const readCoiReloadAttempts = () => {
+        // The reload counter has to survive the reloads it schedules, so it lives in session
+        // storage. Without usable storage there is no way to bound the reloads, and a browser
+        // that blocks site data for this origin normally blocks service workers with it.
+        const ayaStudioCoiReloadStorage = (() => {
             try {
-                return Number.parseInt(sessionStorage.getItem(window.ayaStudioCoiReloadKey) || '0', 10) || 0;
+                window.sessionStorage.setItem(window.ayaStudioCoiReloadKey, '0');
+                window.sessionStorage.removeItem(window.ayaStudioCoiReloadKey);
+                return window.sessionStorage;
+            } catch (error) {
+                return null;
+            }
+        })();
+
+        const readCoiReloadAttempts = () => {
+            if (!ayaStudioCoiReloadStorage)
+                return 0;
+            try {
+                return Number.parseInt(ayaStudioCoiReloadStorage.getItem(window.ayaStudioCoiReloadKey) || '0', 10) || 0;
             } catch (error) {
                 return 0;
             }
         };
 
         const writeCoiReloadAttempts = attempts => {
+            if (!ayaStudioCoiReloadStorage)
+                return;
             try {
-                sessionStorage.setItem(window.ayaStudioCoiReloadKey, String(attempts));
+                ayaStudioCoiReloadStorage.setItem(window.ayaStudioCoiReloadKey, String(attempts));
             } catch (error) {
             }
         };
 
+        window.ayaStudioCoiReloadAttempts = readCoiReloadAttempts();
+
         if (window.ayaStudioSharedMemoryUsable) {
             writeCoiReloadAttempts(0);
+            window.ayaStudioCoiReloadAttempts = 0;
         } else if (!ayaStudioSecureContext) {
             window.ayaStudioSharedMemoryProblem = 'insecure-context';
         } else if (!ayaStudioServiceWorkerAvailable) {
             window.ayaStudioSharedMemoryProblem = 'no-service-worker';
+        } else if (!ayaStudioCoiReloadStorage) {
+            window.ayaStudioSharedMemoryProblem = 'blocked-storage';
         } else if (readCoiReloadAttempts() >= ayaStudioCoiReloadAttemptLimit) {
             window.ayaStudioSharedMemoryProblem = 'service-worker-reload';
         } else {
@@ -211,7 +233,8 @@
                     return;
                 // Count the attempts so a reload that never isolates (a hard reload bypasses
                 // the service worker entirely) still ends in the explanation below.
-                writeCoiReloadAttempts(readCoiReloadAttempts() + 1);
+                window.ayaStudioCoiReloadAttempts = readCoiReloadAttempts() + 1;
+                writeCoiReloadAttempts(window.ayaStudioCoiReloadAttempts);
                 window.location.reload();
             };
             navigator.serviceWorker.register('coi-serviceworker.js')
@@ -1879,11 +1902,12 @@
             // self.crossOriginIsolated" and the engine never boots. Report the requirement, and
             // how to satisfy it, instead of letting the runtime crash in a way that only the
             // console explains.
+            const sharedMemoryServerHint = 'Otherwise serve the build from a host that sends ' +
+                'Cross-Origin-Opener-Policy: same-origin and Cross-Origin-Embedder-Policy: ' +
+                'require-corp on the document itself.';
+
             const sharedMemoryHint = () => {
                 const problem = window.ayaStudioSharedMemoryProblem;
-                const serverHint = 'Otherwise serve the build from a host that sends ' +
-                    'Cross-Origin-Opener-Policy: same-origin and Cross-Origin-Embedder-Policy: ' +
-                    'require-corp on the document itself.';
                 const hints = [];
 
                 if (window.isSecureContext === false)
@@ -1895,41 +1919,149 @@
                     hints.push('This browser has no service worker support, so coi-serviceworker.js ' +
                         'cannot add the headers. Use a browser with service workers, or a host that ' +
                         'sends the headers itself.');
-                else if (problem === 'service-worker-failed' || problem === 'service-worker-reload')
-                    hints.push('The helper service worker coi-serviceworker.js did not supply the ' +
-                        'headers. Check that the file is deployed next to index.html and that ' +
-                        'service workers and site data are allowed for this site.');
-
-                if (problem === 'service-worker-reload')
-                    hints.push('The helper service worker only affects a normal navigation. If ' +
-                        'DevTools is open, turn off "Disable cache" and avoid hard reloading ' +
-                        '(Ctrl+Shift+R), which bypasses the service worker.');
+                else if (problem === 'service-worker-failed')
+                    hints.push('Registering coi-serviceworker.js failed. Check that the file is ' +
+                        'deployed next to index.html and that service workers and site data are ' +
+                        'allowed for this site.');
+                else if (problem === 'blocked-storage')
+                    hints.push('This site is not allowed to store site data, so the reloads that ' +
+                        'activate the helper service worker cannot be counted. Allow cookies and ' +
+                        'site data for this site, or serve the headers from the host itself.');
+                else if (problem === 'service-worker-reload')
+                    hints.push('The helper service worker was reached but never supplied the ' +
+                        'headers, so the findings below say why.');
 
                 if (!hints.length)
-                    hints.push('Open Aya Studio over HTTPS or on localhost.', serverHint);
-                else
-                    hints.push(serverHint);
+                    hints.push('Open Aya Studio over HTTPS or on localhost.');
+                hints.push(sharedMemoryServerHint);
                 return hints;
             };
 
-            const showSharedMemoryUnavailable = reason => {
+            // Why the helper service worker did not isolate the page is only visible in the
+            // browser's own state, so collect it instead of guessing: which worker owns the
+            // page, whether the helper is registered at all, whether an ordinary request of
+            // this document carries the headers, and whether the page is even top level.
+            const sharedMemoryDiagnostics = async () => {
+                const diagnostics = {
+                    problem: window.ayaStudioSharedMemoryProblem || 'none',
+                    crossOriginIsolated: window.crossOriginIsolated,
+                    isSecureContext: window.isSecureContext,
+                    sharedArrayBuffer: typeof SharedArrayBuffer,
+                    topLevelDocument: window.top === window.self,
+                    reloadAttempts: window.ayaStudioCoiReloadAttempts || 0,
+                    url: window.location.href,
+                    serviceWorkerController: null,
+                    helperWorkerRegistered: false,
+                    serviceWorkerRegistrations: [],
+                    documentHeaders: null
+                };
+
+                if (!('serviceWorker' in navigator))
+                    return diagnostics;
+
+                diagnostics.serviceWorkerController =
+                    navigator.serviceWorker.controller?.scriptURL || null;
+                try {
+                    const registrations = await navigator.serviceWorker.getRegistrations();
+                    diagnostics.serviceWorkerRegistrations = registrations.map(registration => ({
+                        scope: registration.scope,
+                        script: registration.active?.scriptURL ||
+                            registration.waiting?.scriptURL ||
+                            registration.installing?.scriptURL || ''
+                    }));
+                    diagnostics.helperWorkerRegistered = diagnostics.serviceWorkerRegistrations
+                        .some(registration => registration.script.includes('coi-serviceworker.js'));
+                } catch (error) {
+                    diagnostics.serviceWorkerRegistrationsError = String(error && error.message || error);
+                }
+
+                try {
+                    const response = await ayaStudioNativeFetch(window.location.href, { cache: 'no-store' });
+                    diagnostics.documentHeaders = {
+                        crossOriginOpenerPolicy: response.headers.get('Cross-Origin-Opener-Policy'),
+                        crossOriginEmbedderPolicy: response.headers.get('Cross-Origin-Embedder-Policy'),
+                        crossOriginResourcePolicy: response.headers.get('Cross-Origin-Resource-Policy'),
+                        status: response.status
+                    };
+                } catch (error) {
+                    diagnostics.documentHeadersError = String(error && error.message || error);
+                }
+
+                return diagnostics;
+            };
+
+            const sharedMemoryFindings = diagnostics => {
+                const findings = [];
+                const controller = diagnostics.serviceWorkerController;
+                const embedderPolicy = diagnostics.documentHeaders?.crossOriginEmbedderPolicy;
+
+                if (!diagnostics.topLevelDocument)
+                    findings.push('This page runs inside an iframe. A frame is only cross-origin ' +
+                        'isolated when the top-level page is isolated too, so open Aya Studio in ' +
+                        'its own tab instead of embedding it.');
+
+                if (controller && !controller.includes('coi-serviceworker.js'))
+                    findings.push(`Another service worker owns this page (${controller}), so the ` +
+                        'helper never gets to add the headers. Unregister it, or host the build ' +
+                        'on a different origin.');
+                else if (!controller && diagnostics.helperWorkerRegistered)
+                    findings.push('The helper is registered but did not control this load: the ' +
+                        'navigation bypassed it. Reload normally, and turn off "Disable cache" in ' +
+                        'DevTools, which bypasses service workers.');
+                else if (!controller)
+                    findings.push('No service worker is registered for this page at all, so ' +
+                        'nothing could add the headers. Deploy coi-serviceworker.js next to ' +
+                        'index.html and check that service workers are allowed.');
+                else if (!embedderPolicy)
+                    findings.push('coi-serviceworker.js controls this page but did not add the ' +
+                        'headers to it. A stale or modified copy of the script may be cached: ' +
+                        'clear this site\'s data and reload.');
+
+                if (embedderPolicy && !diagnostics.crossOriginIsolated && diagnostics.topLevelDocument)
+                    findings.push('Ordinary requests do receive the headers, but the navigation ' +
+                        'did not, so the document itself is not isolated. The host has to send ' +
+                        'the headers on the HTML response.');
+
+                if (diagnostics.reloadAttempts && !diagnostics.crossOriginIsolated)
+                    findings.push(`This page reloaded ${diagnostics.reloadAttempts} time(s) trying ` +
+                        'to become isolated; it will not try again in this tab. Open the build in ' +
+                        'a new tab after fixing the cause above.');
+
+                return findings;
+            };
+
+            window.ayaStudioSharedMemoryReport = async () => {
+                const diagnostics = await sharedMemoryDiagnostics();
+                return {
+                    diagnostics,
+                    findings: sharedMemoryFindings(diagnostics),
+                    hints: sharedMemoryHint()
+                };
+            };
+
+            let sharedMemoryUnavailableShown = false;
+            const showSharedMemoryUnavailable = async reason => {
+                const diagnostics = await sharedMemoryDiagnostics();
+                const findings = sharedMemoryFindings(diagnostics);
+                console.error('[Aya Studio] Shared memory unavailable:', {
+                    reason,
+                    requiredHeaders: {
+                        'Cross-Origin-Opener-Policy': 'same-origin',
+                        'Cross-Origin-Embedder-Policy': 'require-corp'
+                    },
+                    diagnostics,
+                    findings,
+                    hints: sharedMemoryHint()
+                });
+
+                if (sharedMemoryUnavailableShown)
+                    return;
+                sharedMemoryUnavailableShown = true;
+
                 const explanation = reason === 'runtime'
                     ? 'The WebAssembly engine could not start its worker threads because this page is ' +
                       'not cross-origin isolated.'
                     : 'The WebAssembly engine needs shared memory, which this page cannot get.';
-                console.error('[Aya Studio] Shared memory unavailable:', {
-                    reason,
-                    problem: window.ayaStudioSharedMemoryProblem,
-                    crossOriginIsolated: window.crossOriginIsolated,
-                    isSecureContext: window.isSecureContext,
-                    serviceWorker: 'serviceWorker' in navigator,
-                    sharedArrayBuffer: typeof SharedArrayBuffer,
-                    requiredHeaders: {
-                        'Cross-Origin-Opener-Policy': 'same-origin',
-                        'Cross-Origin-Embedder-Policy': 'require-corp'
-                    }
-                });
-
                 const heading = document.createElement('strong');
                 heading.className = 'qt-status-heading';
                 heading.textContent = 'Aya Studio needs cross-origin isolation';
@@ -1943,7 +2075,22 @@
                 status.textContent = '';
                 status.classList.add('qt-status-error');
                 status.append(heading, detail);
-                for (const hint of sharedMemoryHint()) {
+
+                if (findings.length) {
+                    const foundHeading = document.createElement('span');
+                    foundHeading.className = 'qt-status-detail';
+                    foundHeading.textContent = 'What this page found:';
+                    status.append(foundHeading);
+                }
+                for (const finding of findings) {
+                    const line = document.createElement('span');
+                    line.className = 'qt-status-hint';
+                    line.textContent = `• ${finding}`;
+                    status.append(line);
+                }
+
+                const hints = findings.length ? [sharedMemoryServerHint] : sharedMemoryHint();
+                for (const hint of hints) {
                     const line = document.createElement('span');
                     line.className = 'qt-status-hint';
                     line.textContent = `• ${hint}`;
