@@ -49,86 +49,65 @@
     "genre": "port"
   },
   {
-    "name": "2doom",
+    "name": "Doom 2",
     "image": "",
     "link": "Games/Singlefile/2doom.html",
     "repo": "",
     "genre": "port"
   },
   {
-    "name": "doomemscripten",
+    "name": "Doom",
     "image": "",
     "link": "Games/Singlefile/doomemscripten.html",
     "repo": "",
     "genre": "port"
   },
   {
-    "name": "doomori",
+    "name": "Doomori",
     "image": "",
     "link": "Games/Singlefile/doomori.html",
     "repo": "",
     "genre": "port"
   },
   {
-    "name": "doomzio",
+    "name": "Doomz.io",
     "image": "",
     "link": "Games/Singlefile/doomzio.html",
     "repo": "",
     "genre": "port"
   },
   {
-    "name": "Eagler Craft Tech",
+    "name": "Eaglercraft Tech",
     "image": "",
     "link": "Games/Singlefile/EaglerCraftTech.html",
     "repo": "",
     "genre": "port"
   },
   {
-    "name": "Eaglercraft Alpha 126 Offline",
+    "name": "Eaglercraft Alpha 126",
     "image": "",
     "link": "Games/Singlefile/Eaglercraft-Alpha-126-Offline.html",
     "repo": "",
     "genre": "port"
   },
   {
-    "name": "Eaglercraft Beta 13 Offline",
+    "name": "Eaglercraft Beta 13",
     "image": "",
     "link": "Games/Singlefile/Eaglercraft-Beta-13-Offline.html",
     "repo": "",
     "genre": "port"
   },
   {
-    "name": "Eaglercraft Indev Offline",
+    "name": "Eaglercraft Indev",
     "image": "",
     "link": "Games/Singlefile/Eaglercraft-Indev-Offline.html",
     "repo": "",
     "genre": "port"
   },
   {
-    "name": "Eaglercraft Indev Offline(1)",
-    "image": "",
-    "link": "Games/Singlefile/Eaglercraft-Indev-Offline(1).html",
-    "repo": "",
-    "genre": "port"
-  },
-  {
-    "name": "Eaglercraft Indev Offline(2)",
-    "image": "",
-    "link": "Games/Singlefile/Eaglercraft-Indev-Offline(2).html",
-    "repo": "",
-    "genre": "port"
-  },
-  {
-    "name": "Eaglercraft L 19 v0 7 0 Offline Signed",
+    "name": "Eaglercraft L 19 v0 7 0",
     "image": "",
     "link": "Games/Singlefile/EaglercraftL_19_v0_7_0_Offline_Signed.html",
-    "repo": "",
-    "genre": "port"
-  },
-  {
-    "name": "Eaglercraft L 19 v0 7 0 Offline Signed(1)",
-    "image": "",
-    "link": "Games/Singlefile/EaglercraftL_19_v0_7_0_Offline_Signed(1).html",
     "repo": "",
     "genre": "port"
   },
@@ -143,27 +122,6 @@
     "name": "Eaglercraft Z 1112",
     "image": "",
     "link": "Games/Singlefile/EaglercraftZ_1112.html",
-    "repo": "",
-    "genre": "port"
-  },
-  {
-    "name": "Eaglercraft Z 1112(1)",
-    "image": "",
-    "link": "Games/Singlefile/EaglercraftZ_1112(1).html",
-    "repo": "",
-    "genre": "port"
-  },
-  {
-    "name": "eaglercraft152",
-    "image": "",
-    "link": "Games/Singlefile/eaglercraft152.html",
-    "repo": "",
-    "genre": "port"
-  },
-  {
-    "name": "eaglercraftlite",
-    "image": "",
-    "link": "Games/Singlefile/eaglercraftlite.html",
     "repo": "",
     "genre": "port"
   },
