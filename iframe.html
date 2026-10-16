@@ -22,11 +22,8 @@
     </div>
 
     <script>
-        const urlParams = new URLSearchParams(window.location.search);
-
-        let gamePath = urlParams.get('game') || urlParams.get('path') || urlParams.get('url');
-
-        if (!gamePath && window.location.search.length > 1) {
+        let gamePath = "";
+        if (window.location.search.length > 1) {
             gamePath = decodeURIComponent(window.location.search.substring(1));
         }
 
@@ -36,9 +33,9 @@
             if (gamePath.startsWith('http://') || gamePath.startsWith('https://')) {
                 finalGameUrl = gamePath;
             } else {
-                finalGameUrl = `https://newlab.usheje883.workers.dev/iframe?${encodeURIComponent(gamePath)}`;
+                finalGameUrl = gamePath.startsWith('/') ? gamePath : '/' + gamePath;
             }
-
+            
             document.getElementById('gameIframe').src = finalGameUrl;
         } else {
             console.error("No game path specified.");
