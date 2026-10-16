@@ -13,7 +13,7 @@
 
     <div class="gamearea">
         <div class="gamecontainer">
-            <iframe class="gameplayer" allowfullscreen></iframe>
+            <iframe id="gameIframe" class="gameplayer" allowfullscreen></iframe>
 
             <div class="extrabuttons">
                 <button class="extrabutton" onclick="openInBlank()">Open in New Tab</button>
@@ -22,42 +22,16 @@
     </div>
 
     <script>
-        const fullQuery = window.location.search.substring(1);
-        const pageIframe = document.querySelector('.gameplayer');
-        const gameUrl = fullQuery ? decodeURIComponent(fullQuery) : '';
+        const defaultGameUrl = "https://newlab.usheje883.workers.dev/iframe?Games%2FMultifile%2FBounceMasters%2Findex.html";
 
-        if (gameUrl) {
-            pageIframe.src = gameUrl;
-        }
+        const urlParams = new URLSearchParams(window.location.search);
+        const gameUrl = urlParams.get('game') || defaultGameUrl;
+
+        const iframe = document.getElementById('gameIframe');
+        iframe.src = gameUrl;
 
         function openInBlank() {
-            if (!gameUrl) {
-                alert("No game URL provided.");
-                return;
-            }
-
-            const newWindow = window.open('about:blank', '_blank');
-
-            if (newWindow) {
-                const popupIframe = newWindow.document.createElement('iframe');
-                popupIframe.src = gameUrl;
-                popupIframe.allowFullscreen = true;
-                popupIframe.style.position = 'fixed';
-                popupIframe.style.top = '0';
-                popupIframe.style.left = '0';
-                popupIframe.style.width = '100vw';
-                popupIframe.style.height = '100vh';
-                popupIframe.style.border = 'none';
-                popupIframe.style.margin = '0';
-                popupIframe.style.padding = '0';
-                popupIframe.style.overflow = 'hidden';
-
-                newWindow.document.title = 'Game Player';
-                newWindow.document.body.style.margin = '0';
-                newWindow.document.body.appendChild(popupIframe);
-            } else {
-                alert("Please allow pop-ups for this site.");
-            }
+            window.open(gameUrl, '_blank');
         }
     </script>
 </body>
