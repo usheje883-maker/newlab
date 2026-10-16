@@ -22,16 +22,27 @@
     </div>
 
     <script>
-        const defaultGameUrl = "https://newlab.usheje883.workers.dev/iframe?Games%2FMultifile%2FBounceMasters%2Findex.html";
-
         const urlParams = new URLSearchParams(window.location.search);
-        const gameUrl = urlParams.get('game') || defaultGameUrl;
+        const gamePath = urlParams.get('game') || urlParams.get('path') || urlParams.get('url');
 
-        const iframe = document.getElementById('gameIframe');
-        iframe.src = gameUrl;
+        let finalGameUrl = "";
+
+        if (gamePath) {
+            if (gamePath.startsWith('http://') || gamePath.startsWith('https://')) {
+                finalGameUrl = gamePath;
+            } else {
+                finalGameUrl = `https://newlab.usheje883.workers.dev/iframe?${encodeURIComponent(gamePath)}`;
+            }
+            
+            document.getElementById('gameIframe').src = finalGameUrl;
+        } else {
+            console.error("No game specified in URL parameters.");
+        }
 
         function openInBlank() {
-            window.open(gameUrl, '_blank');
+            if (finalGameUrl) {
+                window.open(finalGameUrl, '_blank');
+            }
         }
     </script>
 </body>
