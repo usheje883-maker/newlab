@@ -172,7 +172,7 @@
     "image": "",
     "link": "Games/Singlefile/halflife.html",
     "repo": "",
-    "genre": "games"
+    "genre": "port"
   },
   {
     "name": "Hill Climb Racing Lite",
@@ -182,7 +182,7 @@
     "genre": "games"
   },
   {
-    "name": "Hl2Doom",
+    "name": "Hl2 Doom",
     "image": "",
     "link": "Games/Singlefile/hl2doom.html",
     "repo": "",
@@ -193,7 +193,7 @@
     "image": "",
     "link": "Games/Singlefile/mario64webgl.html",
     "repo": "",
-    "genre": "games"
+    "genre": "port"
   },
   {
     "name": "Minecraft 1.8.8",
@@ -249,7 +249,7 @@
     "image": "Images/bloxorz.png",
     "link": "Games/Multifile/Bloxorz/index.html",
     "repo": "",
-    "genre": "games"
+    "genre": "flash"
   },
   {
     "name": "Granny 2",
@@ -263,84 +263,28 @@
     "image": "Images/johnnyupgrade.png",
     "link": "Games/Singlefile/johnnyupgrade.html",
     "repo": "",
-    "genre": "games"
+    "genre": "flash"
   },
   {
     "name": "10 Bullets",
     "image": "",
     "link": "Games/Singlefile/10bullets.html",
     "repo": "",
-    "genre": "games"
+    "genre": "flash"
   },
   {
     "name": "10 More Bullets",
     "image": "",
     "link": "Games/Singlefile/10morebullets.html",
     "repo": "",
-    "genre": "games"
+    "genre": "flash"
   },
   {
     "name": "1 on 1 Soccer",
     "image": "",
     "link": "Games/Singlefile/1on1soccer.html",
     "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "1v1 Tennis",
-    "image": "",
-    "link": "Games/Singlefile/1v1tennis.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "3 Pandas",
-    "image": "",
-    "link": "Games/Singlefile/3pandas.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "3 Pandas Brazil",
-    "image": "",
-    "link": "Games/Singlefile/3pandasbrazil.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "3 Pandas Fantasy",
-    "image": "",
-    "link": "Games/Singlefile/3pandasfantasy.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "3 Pandas Japan",
-    "image": "",
-    "link": "Games/Singlefile/3pandasjapan.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "3 Pandas Night",
-    "image": "",
-    "link": "Games/Singlefile/3pandasnight.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "3 Slices 2",
-    "image": "",
-    "link": "Games/Singlefile/3slices2.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "40x Escape",
-    "image": "",
-    "link": "Games/Singlefile/40xescape.html",
-    "repo": "",
-    "genre": "games"
+    "genre": "flash"
   },
   {
     "name": "60 Seconds Burger Run",
@@ -18578,65 +18522,9 @@
     "genre": "games"
   },
   {
-    "name": "Snow Ball IO",
-    "image": "",
-    "link": "Games/Singlefile/snowballio.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Snow Boar Dob By",
-    "image": "",
-    "link": "Games/Singlefile/snowboardobby.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Snow Rid",
-    "image": "",
-    "link": "Games/Singlefile/snowrid.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Snow Ride Ee",
-    "image": "",
-    "link": "Games/Singlefile/snowrideee.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
     "name": "Snow Rider",
     "image": "",
     "link": "Games/Singlefile/snowrider.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Snow Rider Goody Gum Drops",
-    "image": "",
-    "link": "Games/Singlefile/snowridergoodygumdrops.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Snowriderrrr",
-    "image": "",
-    "link": "Games/Singlefile/snowriderrrr.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Snow Road",
-    "image": "",
-    "link": "Games/Singlefile/snowroad.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Snow White",
-    "image": "",
-    "link": "Games/Singlefile/snowwhite.html",
     "repo": "",
     "genre": "games"
   },
@@ -18648,41 +18536,6 @@
     "genre": "games"
   },
   {
-    "name": "Soccer Random",
-    "image": "",
-    "link": "Games/Singlefile/soccerrandom.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Soccer Random Good",
-    "image": "",
-    "link": "Games/Singlefile/soccerrandomgood.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Soda Simulator",
-    "image": "",
-    "link": "Games/Singlefile/sodasimulator.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Solar Client",
-    "image": "",
-    "link": "Games/Singlefile/solarclient.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "So Lars And Box",
-    "image": "",
-    "link": "Games/Singlefile/solarsandbox.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
     "name": "Solar Smash",
     "image": "",
     "link": "Games/Singlefile/solarsmash.html",
@@ -18690,429 +18543,9 @@
     "genre": "games"
   },
   {
-    "name": "Sonic1Mobile",
-    "image": "",
-    "link": "Games/Singlefile/sonic1mobile.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Sonic2Mobile",
-    "image": "",
-    "link": "Games/Singlefile/sonic2mobile.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Sonic And Falling Star",
-    "image": "",
-    "link": "Games/Singlefile/sonicandfallingstar.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Sonic Cd Mobile",
-    "image": "",
-    "link": "Games/Singlefile/soniccdmobile.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Soniceexeog",
-    "image": "",
-    "link": "Games/Singlefile/soniceexeog.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Sonic Man Ia",
-    "image": "",
-    "link": "Games/Singlefile/sonicmania.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Sonic Man Ia Plus",
-    "image": "",
-    "link": "Games/Singlefile/sonicmaniaplus.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Sonic Revert",
-    "image": "",
-    "link": "Games/Singlefile/sonicrevert.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Sort The Court",
-    "image": "",
-    "link": "Games/Singlefile/sortthecourt.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Soul Jumper",
-    "image": "",
-    "link": "Games/Singlefile/souljumper.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Sound Board",
-    "image": "",
-    "link": "Games/Singlefile/soundboard.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Space Bar Clicker",
-    "image": "",
-    "link": "Games/Singlefile/spacebarclicker.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Space Company",
-    "image": "",
-    "link": "Games/Singlefile/spacecompany.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Space Wars Battle Ground",
-    "image": "",
-    "link": "Games/Singlefile/spacewarsbattleground.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Space Waves",
-    "image": "",
-    "link": "Games/Singlefile/spacewaves.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Speed Per Click",
-    "image": "",
-    "link": "Games/Singlefile/speedperclick.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Speed Stars",
-    "image": "",
-    "link": "Games/Singlefile/speedstars.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Spelunky",
-    "image": "",
-    "link": "Games/Singlefile/spelunky.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Spiral Roll",
-    "image": "",
-    "link": "Games/Singlefile/spiralroll.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Spirits Of Hell",
-    "image": "",
-    "link": "Games/Singlefile/spiritsofhell.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Sprunked",
-    "image": "",
-    "link": "Games/Singlefile/sprunked.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Sprunki",
-    "image": "",
-    "link": "Games/Singlefile/sprunki.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Sprunkiclicker",
-    "image": "",
-    "link": "Games/Singlefile/sprunkiclicker.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Sprunkipyramixed",
-    "image": "",
-    "link": "Games/Singlefile/sprunkipyramixed.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Squid Playground",
-    "image": "",
-    "link": "Games/Singlefile/squidplayground.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Stack Ball IO",
-    "image": "",
-    "link": "Games/Singlefile/stackballio.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Stacktris",
-    "image": "",
-    "link": "Games/Singlefile/stacktris.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Stac Kyd Ash",
-    "image": "",
-    "link": "Games/Singlefile/stackydash.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Starlike",
-    "image": "",
-    "link": "Games/Singlefile/starlike.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
     "name": "State IO",
     "image": "Images/stateio.png",
     "link": "Games/Singlefile/stateio.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Station141",
-    "image": "",
-    "link": "Games/Singlefile/station141.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Stationmeltdown",
-    "image": "",
-    "link": "Games/Singlefile/stationmeltdown.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "St Ati On Saturn",
-    "image": "",
-    "link": "Games/Singlefile/stationsaturn.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Steal Bra In Rot",
-    "image": "",
-    "link": "Games/Singlefile/stealbrainrot.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Stealbrainrotonline",
-    "image": "",
-    "link": "Games/Singlefile/stealbrainrotonline.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Stealth Master",
-    "image": "",
-    "link": "Games/Singlefile/stealthmaster.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Steels Urge",
-    "image": "",
-    "link": "Games/Singlefile/steelsurge.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Steep Descent",
-    "image": "",
-    "link": "Games/Singlefile/steepdescent.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Stick Archers Battle",
-    "image": "",
-    "link": "Games/Singlefile/stickarchersbattle.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Stick Defenders",
-    "image": "",
-    "link": "Games/Singlefile/stickdefenders.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Stick Fight Er",
-    "image": "",
-    "link": "Games/Singlefile/stickfighter.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Stick Jet Challenge",
-    "image": "",
-    "link": "Games/Singlefile/stickjetchallenge.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Stickman Kingdomclash",
-    "image": "",
-    "link": "Games/Singlefile/StickmanKingdomclash.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Stick Man And Guns",
-    "image": "",
-    "link": "Games/Singlefile/stickmanandguns.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Stick Man Clash",
-    "image": "",
-    "link": "Games/Singlefile/stickmanclash.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Stick Man Duel",
-    "image": "",
-    "link": "Games/Singlefile/stickmanduel.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Stick Man Hook",
-    "image": "Images/stickmanhook.png",
-    "link": "Games/Singlefile/stickmanhook.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Stickmankombat2D",
-    "image": "",
-    "link": "Games/Singlefile/stickmankombat2d.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Stick Merge",
-    "image": "",
-    "link": "Games/Singlefile/stickmerge.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Stick Min Breaking Bank",
-    "image": "",
-    "link": "Games/Singlefile/stickminbreakingbank.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Stick Slasher",
-    "image": "",
-    "link": "Games/Singlefile/stickslasher.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Stick With It",
-    "image": "",
-    "link": "Games/Singlefile/stickwithit.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Strikeforceheroes3",
-    "image": "",
-    "link": "Games/Singlefile/strikeforceheroes3.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Striker Dummies",
-    "image": "",
-    "link": "Games/Singlefile/strikerdummies.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Subway Surfers Barcelona",
-    "image": "",
-    "link": "Games/Singlefile/subwaysurfersbarcelona.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Subway Surfers Beijing",
-    "image": "",
-    "link": "Games/Singlefile/subwaysurfersbeijing.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Subway Surfers Berlin",
-    "image": "",
-    "link": "Games/Singlefile/subwaysurfersberlin.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Subway Surfers Buenos Aires",
-    "image": "",
-    "link": "Games/Singlefile/subwaysurfersbuenosaires.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Subway Surfers Havana",
-    "image": "",
-    "link": "Games/Singlefile/subwaysurfershavana.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Subway Surfers Hou St On",
-    "image": "",
-    "link": "Games/Singlefile/subwaysurfershouston.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Subway Surfers Ice Land",
-    "image": "",
-    "link": "Games/Singlefile/subwaysurfersiceland.html",
     "repo": "",
     "genre": "games"
   },
@@ -19166,436 +18599,9 @@
     "genre": "games"
   },
   {
-    "name": "Subwaysurferssanfrancisco (1)",
-    "image": "",
-    "link": "Games/Singlefile/subwaysurferssanfrancisco (1).html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Subway Surfers St Petersburg",
-    "image": "",
-    "link": "Games/Singlefile/subwaysurfersstpetersburg.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Subway Surfers Winter Holiday",
-    "image": "",
-    "link": "Games/Singlefile/subwaysurferswinterholiday.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Subway Surfers Zurich",
-    "image": "",
-    "link": "Games/Singlefile/subwaysurferszurich.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Sugary Spire",
-    "image": "",
-    "link": "Games/Singlefile/sugaryspire.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Sui Ka",
-    "image": "",
-    "link": "Games/Singlefile/suika.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Sui Ka Pico",
-    "image": "",
-    "link": "Games/Singlefile/suikapico.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
     "name": "Summer Rider",
     "image": "",
     "link": "Games/Singlefile/summerrider.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Sun And Mo On",
-    "image": "",
-    "link": "Games/Singlefile/sunandmoon.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Super Car Rush",
-    "image": "",
-    "link": "Games/Singlefile/supercarrush.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Super Cold",
-    "image": "",
-    "link": "Games/Singlefile/supercold.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Superdarkdeception",
-    "image": "",
-    "link": "Games/Singlefile/superdarkdeception.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Superdromebugs",
-    "image": "",
-    "link": "Games/Singlefile/superdromebugs.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Superdromebugs1",
-    "image": "",
-    "link": "Games/Singlefile/superdromebugs(1).html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Super Falling Fred",
-    "image": "",
-    "link": "Games/Singlefile/superfallingfred.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Super Hot",
-    "image": "",
-    "link": "Games/Singlefile/superhot.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Super Hotline Miami",
-    "image": "",
-    "link": "Games/Singlefile/superhotlinemiami.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Super Liquid Soccer",
-    "image": "",
-    "link": "Games/Singlefile/superliquidsoccer.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Super Mario Bros",
-    "image": "",
-    "link": "Games/Singlefile/supermariobros.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Super Oliver World",
-    "image": "",
-    "link": "Games/Singlefile/superoliverworld.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Superonionboy2",
-    "image": "",
-    "link": "Games/Singlefile/superonionboy2.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Super Pickle Ball Adventure",
-    "image": "",
-    "link": "Games/Singlefile/superpickleballadventure.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Super Santa Kicker",
-    "image": "",
-    "link": "Games/Singlefile/supersantakicker.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Supitdept",
-    "image": "",
-    "link": "Games/Singlefile/supitdept.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Supreme Duelist2019",
-    "image": "",
-    "link": "Games/Singlefile/SupremeDuelist2019.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Su Pre Me Duelist",
-    "image": "",
-    "link": "Games/Singlefile/supremeduelist.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Su Pre Me Duelist Fix",
-    "image": "",
-    "link": "Games/Singlefile/supremeduelistfix.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Survevio",
-    "image": "",
-    "link": "Games/Singlefile/survevio.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Survivalracev2",
-    "image": "",
-    "link": "Games/Singlefile/survivalracev2.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Survivor IO",
-    "image": "",
-    "link": "Games/Singlefile/survivorio.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Sushi Unroll",
-    "image": "",
-    "link": "Games/Singlefile/sushiunroll.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Swerve",
-    "image": "",
-    "link": "Games/Singlefile/swerve.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Swing For Bra In Rots",
-    "image": "",
-    "link": "Games/Singlefile/swingforbrainrots.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Switch",
-    "image": "",
-    "link": "Games/Singlefile/switch.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Switchblade",
-    "image": "",
-    "link": "Games/Singlefile/switchblade.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Sword Fight",
-    "image": "",
-    "link": "Games/Singlefile/swordfight.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Swordplay",
-    "image": "",
-    "link": "Games/Singlefile/swordplay.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Ta Bi",
-    "image": "",
-    "link": "Games/Singlefile/tabi.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Table Tanks",
-    "image": "",
-    "link": "Games/Singlefile/tabletanks.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Table Tennis World To Ur",
-    "image": "",
-    "link": "Games/Singlefile/tabletennisworldtour.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Ta Cost And",
-    "image": "",
-    "link": "Games/Singlefile/tacostand.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Tagc3",
-    "image": "",
-    "link": "Games/Singlefile/tagc3.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Tagcm",
-    "image": "",
-    "link": "Games/Singlefile/tagcm.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Tail Of The Drag On",
-    "image": "",
-    "link": "Games/Singlefile/tailofthedragon.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Taisei",
-    "image": "",
-    "link": "Games/Singlefile/taisei.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Tall IO",
-    "image": "",
-    "link": "Games/Singlefile/tallio.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Tall Man Run",
-    "image": "",
-    "link": "Games/Singlefile/tallmanrun.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Tank Mayhem",
-    "image": "",
-    "link": "Games/Singlefile/tankmayhem.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Tank Pixel",
-    "image": "",
-    "link": "Games/Singlefile/tankpixel.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Tanu Ki Sunset",
-    "image": "",
-    "link": "Games/Singlefile/tanukisunset.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Tanukisunsetuhhhhhhhh",
-    "image": "",
-    "link": "Games/Singlefile/tanukisunsetuhhhhhhhh.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Tap Road",
-    "image": "",
-    "link": "Games/Singlefile/taproad.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Tasty Planet",
-    "image": "",
-    "link": "Games/Singlefile/tastyplanet.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Tele Ph On Et Rouble",
-    "image": "",
-    "link": "Games/Singlefile/telephonetrouble.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Temp Overdose",
-    "image": "",
-    "link": "Games/Singlefile/tempoverdose.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Teod",
-    "image": "",
-    "link": "Games/Singlefile/teod.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Terra",
-    "image": "",
-    "link": "Games/Singlefile/terra.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Terri To Rial IO",
-    "image": "Images/territorial.png",
-    "link": "Games/Singlefile/territorialio.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "The Dead Seat",
-    "image": "",
-    "link": "Games/Singlefile/thedeadseat.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "The Dude",
-    "image": "",
-    "link": "Games/Singlefile/thedude.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "The Last St And",
-    "image": "",
-    "link": "Games/Singlefile/thelaststand.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Thelaststandunioncity (1)",
-    "image": "",
-    "link": "Games/Singlefile/thelaststandunioncity (1).html",
     "repo": "",
     "genre": "games"
   },
@@ -19604,89 +18610,12 @@
     "image": "",
     "link": "Games/Singlefile/themaninthewindow.html",
     "repo": "",
-    "genre": "games"
+    "genre": "port"
   },
   {
-    "name": "Thermo Morph",
-    "image": "",
-    "link": "Games/Singlefile/thermomorph.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Thief Puzzle",
-    "image": "",
-    "link": "Games/Singlefile/thiefpuzzle.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Thisistheonlylevel",
-    "image": "",
-    "link": "Games/Singlefile/thisistheonlylevel.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Three Goble Ts",
-    "image": "",
-    "link": "Games/Singlefile/threegoblets.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Throwapotatoagain",
-    "image": "",
-    "link": "Games/Singlefile/throwapotatoagain.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Th Wack",
-    "image": "",
-    "link": "Games/Singlefile/thwack.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Tiberi An Dawn",
-    "image": "",
-    "link": "Games/Singlefile/tiberiandawn.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Ti Me Warriors",
-    "image": "",
-    "link": "Games/Singlefile/timewarriors.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "To As Tar Ling",
-    "image": "",
-    "link": "Games/Singlefile/toastarling.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "To Aster Ball",
-    "image": "",
-    "link": "Games/Singlefile/toasterball.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Tomb Of The Mass",
+    "name": "Tomb Of The Mask",
     "image": "",
     "link": "Games/Singlefile/tombofthemass.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Tommorowandyesterday",
-    "image": "",
-    "link": "Games/Singlefile/tommorowandyesterday.html",
     "repo": "",
     "genre": "games"
   },
@@ -19698,7 +18627,7 @@
     "genre": "games"
   },
   {
-    "name": "To Uh Ou",
+    "name": "Touhou",
     "image": "",
     "link": "Games/Singlefile/touhou.html",
     "repo": "",
@@ -19773,109 +18702,11 @@
     "link": "Games/Singlefile/trafficjam3d.html",
     "repo": "",
     "genre": "games"
-  },
+  }
   {
-    "name": "Tralalerotralalaescapetungtungtungsahur",
-    "image": "",
-    "link": "Games/Singlefile/tralalerotralalaescapetungtungtungsahur.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Trapped With Jester",
-    "image": "",
-    "link": "Games/Singlefile/trappedwithjester.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Trap The Cat",
-    "image": "",
-    "link": "Games/Singlefile/trapthecat.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Tre Cho Ro Us Trials",
-    "image": "",
-    "link": "Games/Singlefile/trechoroustrials.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Trechoroustrialspart2",
-    "image": "",
-    "link": "Games/Singlefile/trechoroustrialspart2.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Treesh Ate You",
+    "name": "Trees Hate You",
     "image": "",
     "link": "Games/Singlefile/treeshateyou.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Trivia Crack",
-    "image": "",
-    "link": "Games/Singlefile/triviacrack.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Truck Sim",
-    "image": "",
-    "link": "Games/Singlefile/trucksim.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Tsuzukimaze",
-    "image": "",
-    "link": "Games/Singlefile/tsuzukimaze.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Tube Jumpers",
-    "image": "",
-    "link": "Games/Singlefile/tubejumpers.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Tuff Client Offline WASM",
-    "image": "",
-    "link": "Games/Singlefile/Tuff_Client_Offline_WASM.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Tuff Client Offline WASM(1)",
-    "image": "",
-    "link": "Games/Singlefile/Tuff_Client_Offline_WASM(1).html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Tung Tung Basics",
-    "image": "",
-    "link": "Games/Singlefile/tungtungbasics.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Tung Tung Horror",
-    "image": "",
-    "link": "Games/Singlefile/tungtunghorror.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Tungtungtungsahurobby",
-    "image": "",
-    "link": "Games/Singlefile/tungtungtungsahurobby.html",
     "repo": "",
     "genre": "games"
   },
@@ -19887,98 +18718,7 @@
     "genre": "games"
   },
   {
-    "name": "Tunnel Rush Better",
-    "image": "",
-    "link": "Games/Singlefile/tunnelrushbetter.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Turbo Stars",
-    "image": "",
-    "link": "Games/Singlefile/turbostars.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Twoball3D",
-    "image": "",
-    "link": "Games/Singlefile/twoball3d.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Ucds",
-    "image": "",
-    "link": "Games/Singlefile/ucds.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "uckyblockobby EUOPHRATESRIVER",
-    "image": "",
-    "link": "Games/Singlefile/uckyblockobbyEUOPHRATESRIVER.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Ufoswampoddysey",
-    "image": "",
-    "link": "Games/Singlefile/ufoswampoddysey.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Ultimatecardrivingsimulator",
-    "image": "",
-    "link": "Games/Singlefile/Ultimatecardrivingsimulator.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Uncanny Cat Golf",
-    "image": "",
-    "link": "Games/Singlefile/uncannycatgolf.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Underneath",
-    "image": "",
-    "link": "Games/Singlefile/underneath.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Undertale Gameboy",
-    "image": "",
-    "link": "Games/Singlefile/undertale-gameboy.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Undertale gameboy(1)",
-    "image": "",
-    "link": "Games/Singlefile/undertale-gameboy(1).html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Under Tale Lb",
-    "image": "",
-    "link": "Games/Singlefile/undertalelb.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Under Tal Er",
-    "image": "",
-    "link": "Games/Singlefile/undertaler.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Under Tale Yellow",
+    "name": "Undertale Yellow",
     "image": "",
     "link": "Games/Singlefile/undertaleyellow.html",
     "repo": "",
@@ -19989,105 +18729,14 @@
     "image": "",
     "link": "Games/Singlefile/unfairmario.html",
     "repo": "",
-    "genre": "games"
+    "genre": "flash"
   },
   {
-    "name": "Unfairundyne",
-    "image": "",
-    "link": "Games/Singlefile/unfairundyne.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Unicycle Hero",
-    "image": "",
-    "link": "Games/Singlefile/unicyclehero.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Unit Res Dreams",
-    "image": "",
-    "link": "Games/Singlefile/unitresdreams.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Uno",
-    "image": "",
-    "link": "Games/Singlefile/uno.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Un On Omer Cy",
-    "image": "",
-    "link": "Games/Singlefile/unonomercy.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Unpkg",
-    "image": "",
-    "link": "Games/Singlefile/unpkg.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Un Ti Me",
-    "image": "",
-    "link": "Games/Singlefile/untime.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Un Titled Goose Ga Me",
+    "name": "Untitled Goose Game",
     "image": "",
     "link": "Games/Singlefile/untitledgoosegame.html",
     "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Up Slash",
-    "image": "",
-    "link": "Games/Singlefile/upslash.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Us Ter Rush",
-    "image": "",
-    "link": "Games/Singlefile/usterrush.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Ut15Tuffclient",
-    "image": "",
-    "link": "Games/Singlefile/ut15tuffclient.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Uvuvwevwevwe Onyetenvewve Ugwemubwem Ossas",
-    "image": "",
-    "link": "Games/Singlefile/UvuvwevwevweOnyetenvewveUgwemubwemOssas.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Uwuclient",
-    "image": "",
-    "link": "Games/Singlefile/uwuclient.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "UZG",
-    "image": "",
-    "link": "Games/Singlefile/UZG.html",
-    "repo": "",
-    "genre": "games"
+    "genre": "port"
   },
   {
     "name": "Vampire Survivors",
@@ -20174,53 +18823,18 @@
     "genre": "games"
   },
   {
-    "name": "Villager",
-    "image": "",
-    "link": "Games/Singlefile/villager.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Vincentmansionofthedead",
-    "image": "",
-    "link": "Games/Singlefile/vincentmansionofthedead.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Volley Random",
-    "image": "",
-    "link": "Games/Singlefile/volleyrandom.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Vollyballchallenge",
-    "image": "",
-    "link": "Games/Singlefile/vollyballchallenge.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Vortex",
-    "image": "",
-    "link": "Games/Singlefile/vortex.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
     "name": "Vs Ag Ore",
     "image": "",
     "link": "Games/Singlefile/vsagore.html",
     "repo": "",
-    "genre": "games"
+    "genre": "fnf"
   },
   {
     "name": "Vs Nonsense",
     "image": "",
     "link": "Games/Singlefile/vsnonsense.html",
     "repo": "",
-    "genre": "games"
+    "genre": "fnf"
   },
   {
     "name": "Wacky Flip",
@@ -20244,20 +18858,6 @@
     "genre": "games"
   },
   {
-    "name": "Waterworks",
-    "image": "",
-    "link": "Games/Singlefile/waterworks.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Waved Ash",
-    "image": "",
-    "link": "Games/Singlefile/wavedash.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
     "name": "Wave Run",
     "image": "",
     "link": "Games/Singlefile/waverun.html",
@@ -20265,25 +18865,25 @@
     "genre": "games"
   },
   {
-    "name": "Web Das Hers",
+    "name": "Web Dashers",
     "image": "",
     "link": "Games/Singlefile/webdashers.html",
     "repo": "",
     "genre": "games"
   },
   {
-    "name": "Webecomewhatwebehold",
+    "name": "W.B.W.W.B.",
     "image": "",
     "link": "Games/Singlefile/webecomewhatwebehold.html",
     "repo": "",
-    "genre": "games"
+    "genre": "port"
   },
   {
     "name": "Web Fishing",
     "image": "",
     "link": "Games/Singlefile/webfishing.html",
     "repo": "",
-    "genre": "games"
+    "genre": "port"
   },
   {
     "name": "Wermhole",
@@ -20300,37 +18900,9 @@
     "genre": "games"
   },
   {
-    "name": "Winter Falling",
-    "image": "",
-    "link": "Games/Singlefile/winterfalling.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Witchcrafttd",
-    "image": "",
-    "link": "Games/Singlefile/witchcrafttd.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Wolfenstein",
-    "image": "",
-    "link": "Games/Singlefile/wolfenstein.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
     "name": "Wood Worm",
     "image": "",
     "link": "Games/Singlefile/woodworm.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Word Le",
-    "image": "",
-    "link": "Games/Singlefile/wordle.html",
     "repo": "",
     "genre": "games"
   },
@@ -20345,34 +18917,6 @@
     "name": "Wrestle Bros",
     "image": "",
     "link": "Games/Singlefile/wrestlebros.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Wurst Client",
-    "image": "",
-    "link": "Games/Singlefile/wurstclient.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Xevent",
-    "image": "",
-    "link": "Games/Singlefile/xevent.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Xor",
-    "image": "",
-    "link": "Games/Singlefile/xor.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Yan De Re Simulator",
-    "image": "",
-    "link": "Games/Singlefile/yanderesimulator.html",
     "repo": "",
     "genre": "games"
   },
@@ -20398,72 +18942,9 @@
     "genre": "games"
   },
   {
-    "name": "Youvs100Skibidi1",
-    "image": "",
-    "link": "Games/Singlefile/youvs100skibidi(1).html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Yu Me Nikki",
-    "image": "",
-    "link": "Games/Singlefile/yumenikki.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Zelda Mini Sh Cap",
-    "image": "",
-    "link": "Games/Singlefile/zeldaminishcap.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Zen Word",
-    "image": "",
-    "link": "Games/Singlefile/zenword.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Zeta Client",
-    "image": "",
-    "link": "Games/Singlefile/ZetaClient.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
     "name": "Zombie Road",
     "image": "",
     "link": "Games/Singlefile/zombieroad.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Zombotronreboot",
-    "image": "",
-    "link": "Games/Singlefile/zombotronreboot.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Zumashooter",
-    "image": "",
-    "link": "Games/Singlefile/zumashooter.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "Oo",
-    "image": "",
-    "link": "Games/Singlefile/Öoo.html",
-    "repo": "",
-    "genre": "games"
-  },
-  {
-    "name": "",
-    "image": "",
-    "link": "Games/Singlefile/ʘ.html",
     "repo": "",
     "genre": "games"
   }
